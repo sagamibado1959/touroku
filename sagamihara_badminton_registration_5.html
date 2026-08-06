@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>相模原市バドミントン協会 登録フォーム</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@500;700;900&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --court:#155A45;
+    --court-deep:#0E4235;
+    --line-white:#F4F7F1;
+    --shuttle:#E8792B;
+    --shuttle-deep:#C6611C;
+    --ink:#152420;
+    --ink-soft:#516158;
+    --bg:#EFF4EE;
+    --card:#FFFFFF;
+    --line:#DCE6DC;
+    --line-soft:#EAF0E8;
+    --error:#B23A2E;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Noto Sans JP', sans-serif;
+    line-height:1.65;
+    padding:40px 14px 100px;
+  }
+  .wrap{max-width:680px;margin:0 auto;}
+  h1,h2,h3,.disp{font-family:'Zen Kaku Gothic New', sans-serif;}
+
+  /* --- Hero / court header --- */
+  .hero{
+    position:relative;
+    background:linear-gradient(160deg, var(--court) 0%, var(--court-deep) 100%);
+    border-radius:20px;
+    padding:40px 28px 34px;
+    color:var(--line-white);
+    overflow:hidden;
+    box-shadow:0 20px 44px -22px rgba(14,66,53,0.55);
+  }
+  .court-lines{position:absolute;inset:0;opacity:.35;}
+  .hero-content{position:relative;z-index:1;text-align:center;}
+  .shuttle-icon{width:40px;height:40px;margin:0 auto 14px;display:block;}
+  .eyebrow{
+    font-size:12px;letter-spacing:.3em;text-transform:uppercase;
+    color:#BFE0CE;margin-bottom:10px;font-weight:700;
+  }
+  .hero h1{font-weight:900;font-size:24px;margin:0 0 8px;letter-spacing:.02em;}
+  .hero p{margin:0;font-size:13px;color:#D7E9DD;max-width:400px;margin-inline:auto;}
+
+  /* --- Landing choice screen --- */
+  .landing{margin-top:22px;}
+  .landing-title{
+    text-align:center;font-family:'Zen Kaku Gothic New', sans-serif;
+    font-weight:700;font-size:14.5px;color:var(--ink-soft);margin-bottom:12px;
+  }
+  .landing-options{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  @media (max-width:520px){.landing-options{grid-template-columns:1fr;}}
+  .landing-card{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:26px 18px;text-align:center;cursor:pointer;transition:all .15s;
+    font-family:'Noto Sans JP', sans-serif;
+  }
+  .landing-card:hover{border-color:var(--shuttle);box-shadow:0 14px 28px -18px rgba(232,121,43,0.5);transform:translateY(-1px);}
+  .lc-icon{
+    width:42px;height:42px;border-radius:50%;background:var(--court);color:#fff;
+    display:flex;align-items:center;justify-content:center;margin:0 auto 12px;
+    font-size:20px;font-weight:800;font-family:'Zen Kaku Gothic New', sans-serif;
+  }
+  .landing-card[data-choice="correction"] .lc-icon{background:var(--shuttle);}
+  .lc-title{font-family:'Zen Kaku Gothic New', sans-serif;font-weight:800;font-size:15px;color:var(--court-deep);margin-bottom:5px;}
+  .lc-desc{font-size:12px;color:var(--ink-soft);line-height:1.5;}
+
+  .back-btn{
+    background:none;border:none;color:var(--ink-soft);font-size:12.5px;
+    font-weight:600;cursor:pointer;padding:6px 0;margin:14px 0 -6px;
+    display:inline-flex;align-items:center;gap:4px;
+  }
+  .back-btn:hover{color:var(--court-deep);}
+  #registerFlow{display:none;}
+  #correctionFlow{display:none;}
+
+  /* --- Tabs --- */
+  .tabs{
+    display:flex;gap:8px;margin-top:20px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:6px;
+  }
+  .tab-btn{
+    flex:1;
+    padding:12px 10px;
+    border:none;
+    background:transparent;
+    border-radius:8px;
+    font-family:'Zen Kaku Gothic New', sans-serif;
+    font-weight:700;
+    font-size:14px;
+    color:var(--ink-soft);
+    cursor:pointer;
+    transition:all .15s;
+  }
+  .tab-btn.active{
+    background:var(--shuttle);
+    color:#fff;
+    box-shadow:0 6px 16px -6px rgba(230,110,30,0.55);
+  }
+  .tab-meta{
+    text-align:center;font-size:11.5px;color:var(--ink-soft);margin-top:8px;
+  }
+  .edit-mode-label{
+    text-align:center;font-size:12.5px;color:var(--shuttle-deep);
+    font-weight:700;margin-top:18px;
+    background:#FDF3EA;border:1px dashed var(--shuttle);
+    border-radius:9px;padding:10px;
+  }
+
+  /* --- Card / panels --- */
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:14px;
+    margin-top:16px;
+    padding:6px 24px 26px;
+  }
+  .panel{display:none;}
+  .panel.active{display:block;}
+
+  .section{padding-top:24px;}
+  .section + .section{border-top:1px solid var(--line-soft);margin-top:4px;}
+  .section-head{display:flex;align-items:center;gap:9px;margin-bottom:16px;}
+  .marker{width:8px;height:8px;background:var(--shuttle);border-radius:2px;transform:rotate(45deg);flex:none;}
+  .section-head h2{font-weight:700;font-size:15.5px;margin:0;color:var(--court-deep);}
+  .section-note{font-size:12px;color:var(--ink-soft);margin:-8px 0 14px;}
+
+  .field{margin-bottom:15px;}
+  .field label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;}
+  .req{color:var(--shuttle-deep);margin-left:2px;font-weight:800;}
+  .opt{color:var(--ink-soft);font-weight:500;margin-left:4px;font-size:11px;}
+
+  input[type=text], input[type=tel], input[type=email], input[type=date], input[type=number], textarea, select{
+    width:100%;font-family:inherit;font-size:14px;color:var(--ink);
+    background:var(--bg);border:1px solid var(--line);border-radius:8px;
+    padding:10px 12px;outline:none;transition:border-color .15s, box-shadow .15s;
+  }
+  textarea{resize:vertical;min-height:70px;}
+  input:focus, textarea:focus, select:focus{
+    border-color:var(--shuttle);box-shadow:0 0 0 3px rgba(232,121,43,0.18);
+  }
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .row3{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:10px;}
+  @media (max-width:560px){.row2,.row3{grid-template-columns:1fr;}}
+
+  .choice-group{display:flex;flex-wrap:wrap;gap:8px;}
+  .choice{position:relative;}
+  .choice input{position:absolute;opacity:0;inset:0;cursor:pointer;}
+  .choice span{
+    display:inline-flex;align-items:center;padding:8px 14px;border:1px solid var(--line);
+    border-radius:999px;font-size:12.5px;background:var(--bg);color:var(--ink-soft);
+    cursor:pointer;transition:all .15s;
+  }
+  .choice input:checked + span{background:var(--court);border-color:var(--court);color:#fff;}
+  .choice input:focus-visible + span{box-shadow:0 0 0 3px rgba(21,90,69,0.25);}
+
+  .age-preview{font-size:11.5px;color:var(--ink-soft);margin-top:6px;min-height:15px;}
+  .age-preview strong{color:var(--court-deep);}
+
+  .check-row{display:flex;align-items:flex-start;gap:9px;font-size:13.5px;color:var(--ink);}
+  .check-row input{margin-top:3px;accent-color:var(--court);width:16px;height:16px;flex:none;}
+
+  .error-msg{font-size:11.5px;color:var(--error);margin-top:5px;display:none;}
+  .field.invalid input, .field.invalid select{border-color:var(--error);}
+  .field.invalid .error-msg{display:block;}
+
+  /* --- Team member table --- */
+  .member-list{display:flex;flex-direction:column;gap:10px;}
+  .member-row{
+    display:grid;
+    grid-template-columns:28px 1.3fr 1.1fr 1fr 90px 26px;
+    gap:8px;
+    align-items:center;
+    background:var(--bg);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:10px;
+  }
+  .member-row.invalid{border-color:var(--error);}
+  @media (max-width:620px){
+    .member-row{grid-template-columns:1fr 1fr;}
+    .member-num{grid-column:1/-1;font-weight:700;color:var(--court-deep);}
+    .member-remove{grid-column:1/-1;justify-self:end;}
+  }
+  .member-num{
+    font-family:'Zen Kaku Gothic New', sans-serif;
+    font-weight:800;color:var(--court);
+    font-size:13px;text-align:center;
+  }
+  .member-row input, .member-row select{padding:8px 9px;font-size:13px;background:#fff;}
+  .member-remove{
+    background:none;border:none;color:var(--ink-soft);cursor:pointer;
+    font-size:16px;width:26px;height:26px;border-radius:6px;
+  }
+  .member-remove:hover{background:#F2DDD2;color:var(--error);}
+  .member-remove:disabled{opacity:.25;cursor:not-allowed;}
+  .member-remove:disabled:hover{background:none;color:var(--ink-soft);}
+
+  .add-member{
+    margin-top:12px;
+    width:100%;
+    padding:11px;
+    border:1.5px dashed var(--shuttle);
+    background:#FDF3EA;
+    color:var(--shuttle-deep);
+    font-weight:700;
+    font-size:13px;
+    border-radius:9px;
+    cursor:pointer;
+    font-family:'Zen Kaku Gothic New', sans-serif;
+  }
+  .add-member:hover{background:#FBE7D4;}
+  .min-note{font-size:11.5px;color:var(--ink-soft);margin-top:8px;}
+  .min-note.err{color:var(--error);font-weight:600;}
+
+  .agree{
+    margin-top:24px;padding:15px;background:var(--bg);
+    border:1px dashed var(--court);border-radius:10px;
+    display:flex;gap:10px;align-items:flex-start;font-size:12px;color:var(--ink-soft);
+  }
+  .agree input{margin-top:2px;accent-color:var(--court);width:16px;height:16px;flex:none;}
+
+  .submit-row{margin-top:24px;}
+  button.submit{
+    width:100%;background:var(--shuttle);color:#fff;border:none;border-radius:10px;
+    padding:15px;font-size:15px;font-weight:800;font-family:'Zen Kaku Gothic New', sans-serif;
+    letter-spacing:.03em;cursor:pointer;transition:background .15s;
+  }
+  button.submit:hover{background:var(--shuttle-deep);}
+  button.submit:disabled{opacity:.6;cursor:not-allowed;}
+  .submit-hint{text-align:center;font-size:11.5px;color:var(--ink-soft);margin-top:9px;}
+
+  .success{display:none;text-align:center;padding:46px 26px 40px;}
+  .success.show{display:block;}
+  .card.hidden{display:none;}
+  .success .ring{
+    width:54px;height:54px;border-radius:50%;background:var(--court);color:#fff;
+    display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:24px;
+  }
+  .success h3{font-weight:800;font-size:18px;margin:0 0 8px;color:var(--court-deep);}
+  .success p{font-size:13px;color:var(--ink-soft);max-width:360px;margin:0 auto;}
+  .success-actions{display:flex;flex-direction:column;gap:10px;margin-top:22px;align-items:center;}
+  .edit-btn{
+    background:none;
+    border:1.5px solid var(--court);
+    color:var(--court-deep);
+    font-family:'Zen Kaku Gothic New', sans-serif;
+    font-weight:700;
+    font-size:13.5px;
+    padding:11px 22px;
+    border-radius:9px;
+    cursor:pointer;
+    transition:background .15s;
+    width:100%;
+    max-width:280px;
+  }
+  .edit-btn:hover{background:var(--line-soft);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <svg class="court-lines" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <rect x="10" y="10" width="380" height="180" fill="none" stroke="#F4F7F1" stroke-width="2"/>
+      <line x1="10" y1="100" x2="390" y2="100" stroke="#F4F7F1" stroke-width="2"/>
+      <line x1="130" y1="10" x2="130" y2="190" stroke="#F4F7F1" stroke-width="1.4"/>
+      <line x1="270" y1="10" x2="270" y2="190" stroke="#F4F7F1" stroke-width="1.4"/>
+      <line x1="10" y1="45" x2="390" y2="45" stroke="#F4F7F1" stroke-width="1"/>
+      <line x1="10" y1="155" x2="390" y2="155" stroke="#F4F7F1" stroke-width="1"/>
+    </svg>
+    <div class="hero-content">
+      <svg class="shuttle-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="24" cy="34" r="7" fill="#F4F7F1"/>
+        <path d="M24 27 L10 6 M24 27 L18 4 M24 27 L30 4 M24 27 L38 6" stroke="#F4F7F1" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+      <div class="eyebrow">Sagamihara Badminton Association</div>
+      <h1>相模原市バドミントン協会<br>登録フォーム</h1>
+      <p>個人登録・団体登録(5名以上)のいずれかをお選びの上、ご登録ください。</p>
+    </div>
+  </div>
+
+  <div class="landing" id="landing">
+    <div class="landing-title">ご希望の手続きをお選びください</div>
+    <div class="landing-options">
+      <button type="button" class="landing-card" data-choice="register">
+        <div class="lc-icon">＋</div>
+        <div class="lc-title">新規登録</div>
+        <div class="lc-desc">個人登録・団体登録<br>(団体は5名以上)</div>
+      </button>
+      <button type="button" class="landing-card" data-choice="correction">
+        <div class="lc-icon">✎</div>
+        <div class="lc-title">登録内容の修正</div>
+        <div class="lc-desc">ご登録済みの内容を<br>検索して修正できます</div>
+      </button>
+    </div>
+  </div>
+
+  <!-- ===================== 検索(修正用) ===================== -->
+  <div id="correctionFlow">
+    <button type="button" class="back-btn" id="backFromCorrection">← 最初の画面に戻る</button>
+    <form class="card" id="searchForm" novalidate>
+      <div class="section" style="padding-top:20px;">
+        <div class="section-head"><span class="marker"></span><h2>登録内容の検索</h2></div>
+        <p class="section-note">登録時にご入力いただいたお名前(団体名)と電話番号で検索します。</p>
+
+        <div class="field" id="s-type">
+          <label>登録区分<span class="req">*</span></label>
+          <div class="choice-group">
+            <label class="choice"><input type="radio" name="sType" value="individual" required><span>個人登録</span></label>
+            <label class="choice"><input type="radio" name="sType" value="team" required><span>団体登録</span></label>
+          </div>
+          <div class="error-msg">登録区分を選択してください。</div>
+        </div>
+
+        <div class="field" id="s-name">
+          <label>お名前(個人)/ 団体名(団体)<span class="req">*</span></label>
+          <input type="text" name="sName" placeholder="相模原 太郎 / 〇〇バドミントンクラブ" required>
+          <div class="error-msg">お名前または団体名をご入力ください。</div>
+        </div>
+
+        <div class="field" id="s-tel">
+          <label>電話番号<span class="req">*</span></label>
+          <input type="tel" name="sTel" placeholder="090-1234-5678" required>
+          <div class="error-msg">電話番号をご入力ください。</div>
+        </div>
+
+        <button type="submit" class="submit" id="searchBtn">検索する</button>
+        <div class="min-note" id="searchMsg" style="display:none;"></div>
+      </div>
+    </form>
+  </div>
+
+  <!-- ===================== 登録(新規・編集共通) ===================== -->
+  <div id="registerFlow">
+  <button type="button" class="back-btn" id="backFromRegister">← 最初の画面に戻る</button>
+  <div class="tabs" id="tabsBar">
+    <button type="button" class="tab-btn active" data-tab="individual">個人登録</button>
+    <button type="button" class="tab-btn" data-tab="team">団体登録</button>
+  </div>
+  <div class="tab-meta" id="tabMeta">個人でご登録いただく方はこちら</div>
+  <div class="edit-mode-label" id="editModeLabel" style="display:none;"></div>
+
+  <!-- 個人登録 -->
+  <form class="card panel active" id="individualForm" data-panel="individual" novalidate>
+
+    <div class="section">
+      <div class="section-head"><span class="marker"></span><h2>基本情報</h2></div>
+
+      <div class="field" id="i-name">
+        <label>氏名<span class="req">*</span></label>
+        <input type="text" name="name" placeholder="相模原 太郎" required>
+        <div class="error-msg">氏名をご入力ください。</div>
+      </div>
+
+      <div class="field" id="i-kana">
+        <label>よみがな<span class="req">*</span></label>
+        <input type="text" name="kana" placeholder="さがみはら たろう" required>
+        <div class="error-msg">よみがなをご入力ください。</div>
+      </div>
+
+      <div class="row2">
+        <div class="field" id="i-birthday">
+          <label>生年月日<span class="req">*</span></label>
+          <input type="date" name="birthday" required>
+          <div class="age-preview" id="i-age-preview"></div>
+          <div class="error-msg">生年月日をご入力ください。</div>
+        </div>
+        <div class="field" id="i-gender">
+          <label>性別<span class="req">*</span></label>
+          <div class="choice-group">
+            <label class="choice"><input type="radio" name="gender" value="male" required><span>男性</span></label>
+            <label class="choice"><input type="radio" name="gender" value="female" required><span>女性</span></label>
+            <label class="choice"><input type="radio" name="gender" value="other" required><span>その他</span></label>
+          </div>
+          <div class="error-msg">性別を選択してください。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head"><span class="marker"></span><h2>登録チーム</h2></div>
+
+      <div class="field" id="i-teamname">
+        <label>登録チーム名<span class="req">*</span></label>
+        <input type="text" name="teamName" placeholder="〇〇バドミントンクラブ" required>
+        <div class="error-msg">登録チーム名をご入力いただくか、フリー(無所属)で登録にチェックしてください。</div>
+      </div>
+
+      <label class="check-row" style="margin-top:2px;">
+        <input type="checkbox" id="freeAgentCheck" name="freeAgent">
+        フリー(無所属)で登録する
+      </label>
+    </div>
+
+    <div class="section">
+      <div class="section-head"><span class="marker"></span><h2>連絡先</h2></div>
+
+      <div class="field" id="i-address">
+        <label>住所<span class="req">*</span></label>
+        <input type="text" name="address" placeholder="相模原市中央区〇〇 1-2-3" required>
+        <div class="error-msg">住所をご入力ください。</div>
+      </div>
+
+      <div class="row2">
+        <div class="field" id="i-tel">
+          <label>電話番号<span class="req">*</span></label>
+          <input type="tel" name="tel" placeholder="090-1234-5678" required>
+          <div class="error-msg">電話番号をご入力ください。</div>
+        </div>
+        <div class="field" id="i-email">
+          <label>メールアドレス<span class="req">*</span></label>
+          <input type="email" name="email" placeholder="taro@example.com" required>
+          <div class="error-msg">メールアドレスをご入力ください。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="agree">
+      <input type="checkbox" id="i-agree" required>
+      <label for="i-agree">ご記入いただいた個人情報は、協会の会員管理・連絡目的にのみ使用し、ご本人の同意なく第三者へ提供することはありません。上記内容に同意の上、送信します。</label>
+    </div>
+
+    <div class="submit-row">
+      <button type="submit" class="submit">個人登録を送信する</button>
+      <div class="submit-hint">送信後、事務局よりご連絡させていただく場合があります。</div>
+    </div>
+  </form>
+
+  <!-- 団体登録 -->
+  <form class="card panel" id="teamForm" data-panel="team" novalidate>
+
+    <div class="section" style="padding-top:24px;">
+      <div class="section-head"><span class="marker"></span><h2>団体情報</h2></div>
+
+      <div class="field" id="t-teamname">
+        <label>団体名(チーム名)<span class="req">*</span></label>
+        <input type="text" name="teamName" placeholder="〇〇バドミントンクラブ" required>
+        <div class="error-msg">団体名をご入力ください。</div>
+      </div>
+
+      <div class="field" id="t-base">
+        <label>活動拠点<span class="req">*</span></label>
+        <input type="text" name="base" placeholder="例:相模原市総合体育館" required>
+        <div class="error-msg">活動拠点をご入力ください。</div>
+      </div>
+
+      <div class="field" id="t-activitytime">
+        <label>主な活動日・時間帯<span class="req">*</span></label>
+        <input type="text" name="activityTime" placeholder="例:毎週土曜 19:00〜21:00" required>
+        <div class="error-msg">活動日・時間帯をご入力ください。</div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head"><span class="marker"></span><h2>代表者情報</h2></div>
+
+      <div class="field" id="t-repname">
+        <label>代表者氏名<span class="req">*</span></label>
+        <input type="text" name="repName" placeholder="相模原 太郎" required>
+        <div class="error-msg">代表者氏名をご入力ください。</div>
+      </div>
+
+      <div class="row2">
+        <div class="field" id="t-reptel">
+          <label>電話番号<span class="req">*</span></label>
+          <input type="tel" name="repTel" placeholder="090-1234-5678" required>
+          <div class="error-msg">電話番号をご入力ください。</div>
+        </div>
+        <div class="field" id="t-repemail">
+          <label>メールアドレス<span class="req">*</span></label>
+          <input type="email" name="repEmail" placeholder="taro@example.com" required>
+          <div class="error-msg">メールアドレスをご入力ください。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head"><span class="marker"></span><h2>メンバー登録</h2></div>
+      <p class="section-note">団体登録には代表者を含め<strong>5名以上</strong>のメンバー情報が必要です。</p>
+
+      <div class="member-list" id="memberList"></div>
+
+      <button type="button" class="add-member" id="addMemberBtn">＋ メンバーを追加</button>
+      <div class="min-note" id="minNote">現在の登録人数:<span id="memberCount">5</span>名 (5名以上必須)</div>
+    </div>
+
+    <div class="agree">
+      <input type="checkbox" id="t-agree" required>
+      <label for="t-agree">ご記入いただいた個人情報は、協会の会員管理・連絡目的にのみ使用し、ご本人の同意なく第三者へ提供することはありません。全メンバーの同意を確認の上、送信します。</label>
+    </div>
+
+    <div class="submit-row">
+      <button type="submit" class="submit">団体登録を送信する</button>
+      <div class="submit-hint">送信後、事務局よりご連絡させていただく場合があります。</div>
+    </div>
+  </form>
+  </div>
+
+  <div class="card success" id="successCard">
+    <div class="ring">✓</div>
+    <h3 id="successTitle">ご登録ありがとうございます</h3>
+    <p id="successText">内容を確かに受け取りました。協会事務局が確認の上、必要に応じてご連絡いたします。</p>
+    <div class="success-actions">
+      <button type="button" class="edit-btn" id="editBtn">この内容をさらに修正する</button>
+      <button type="button" class="edit-btn" id="backToLandingBtn">最初の画面に戻る</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ============================================================
+   API設定
+   ここに、デプロイしたGoogle Apps Script ウェブアプリの
+   URLとトークンを設定してください。(セットアップ手順書を参照)
+============================================================ */
+const API_URL = 'https://script.google.com/macros/s/AKfycbyfqNIsnqaD7nTcxMkor1Y_jrR3fqjDNb6IyUn6ZdvASWUmA_liIfSCi9d7Di9LStsl/exec';
+const API_TOKEN = 'MIMIKIKI01566';
+
+function isApiConfigured(){
+  return API_URL.indexOf('PASTE_YOUR') === -1 && API_TOKEN.indexOf('PASTE_YOUR') === -1;
+}
+
+async function apiCall(action, extra){
+  if(!isApiConfigured()){
+    throw new Error('APIが未設定です。セットアップ手順書に従い、HTML内のAPI_URLとAPI_TOKENを書き換えてください。');
+  }
+  const res = await fetch(API_URL, {
+    method: 'POST',
+    // text/plain を指定するとブラウザのCORSプリフライトを回避でき、
+    // Apps Script側は e.postData.contents をそのままJSONとして読み取れます。
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(Object.assign({ action, token: API_TOKEN }, extra))
+  });
+  if(!res.ok){
+    throw new Error('サーバーへの通信に失敗しました(HTTP ' + res.status + ')');
+  }
+  const data = await res.json();
+  if(!data.ok && data.error){
+    throw new Error(data.error);
+  }
+  return data;
+}
+
+/* ============================================================
+   状態管理
+   formMode: 'create' (新規登録) | 'edit' (既存データの編集)
+   editingType: 'individual' | 'team' | null
+   editingKey: スプレッドシート上のレコードID
+   editingRecord: 直前に読み込んだ/保存したレコード
+============================================================ */
+let formMode = 'create';
+let editingType = null;
+let editingKey = null;
+let editingRecord = null;
+
+function calcAge(birthdayStr){
+  if(!birthdayStr) return null;
+  const b = new Date(birthdayStr + 'T00:00:00');
+  if(isNaN(b.getTime())) return null;
+  const now = new Date();
+  let age = now.getFullYear() - b.getFullYear();
+  const mDiff = now.getMonth() - b.getMonth();
+  if(mDiff < 0 || (mDiff === 0 && now.getDate() < b.getDate())) age--;
+  return age >= 0 ? age : null;
+}
+
+
+/* ---------- Tabs ---------- */
+const tabBtns = document.querySelectorAll('.tab-btn');
+const panels = document.querySelectorAll('.panel');
+const tabMeta = document.getElementById('tabMeta');
+const editModeLabel = document.getElementById('editModeLabel');
+const tabsBar = document.getElementById('tabsBar');
+const metaText = {
+  individual: '個人でご登録いただく方はこちら',
+  team: 'チーム・サークル単位でご登録いただく方はこちら(5名以上)'
+};
+tabBtns.forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    tabBtns.forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const target = btn.dataset.tab;
+    panels.forEach(p=>p.classList.toggle('active', p.dataset.panel===target));
+    tabMeta.textContent = metaText[target];
+    successCardEl.classList.remove('show');
+    document.querySelectorAll('.card').forEach(c=>{ if(c.id!=='successCard') c.classList.remove('hidden'); });
+  });
+});
+
+function enterEditUI(type){
+  tabsBar.style.display = 'none';
+  tabMeta.style.display = 'none';
+  editModeLabel.style.display = 'block';
+  editModeLabel.textContent = type === 'individual'
+    ? '編集中:個人登録の内容を修正しています'
+    : '編集中:団体登録の内容を修正しています';
+  panels.forEach(p=>p.classList.toggle('active', p.dataset.panel===type));
+}
+function exitEditUI(){
+  tabsBar.style.display = '';
+  tabMeta.style.display = '';
+  editModeLabel.style.display = 'none';
+}
+function setFormButtonLabels(){
+  iForm.querySelector('button.submit').textContent = formMode === 'edit' ? '個人登録の内容を更新する' : '個人登録を送信する';
+  tForm.querySelector('button.submit').textContent = formMode === 'edit' ? '団体登録の内容を更新する' : '団体登録を送信する';
+}
+
+/* ---------- Landing screen navigation ---------- */
+const landing = document.getElementById('landing');
+const registerFlow = document.getElementById('registerFlow');
+const correctionFlow = document.getElementById('correctionFlow');
+const successCardEl = document.getElementById('successCard');
+
+function showLanding(){
+  landing.style.display = '';
+  registerFlow.style.display = 'none';
+  correctionFlow.style.display = 'none';
+  successCardEl.classList.remove('show');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function showRegisterFlow(){
+  landing.style.display = 'none';
+  registerFlow.style.display = '';
+  correctionFlow.style.display = 'none';
+  successCardEl.classList.remove('show');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function showCorrectionFlow(){
+  landing.style.display = 'none';
+  registerFlow.style.display = 'none';
+  correctionFlow.style.display = '';
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+document.querySelector('.landing-card[data-choice="register"]').addEventListener('click', ()=>{
+  formMode = 'create'; editingType = null; editingKey = null; editingRecord = null;
+  resetIndividualForm();
+  resetTeamForm();
+  exitEditUI();
+  tabBtns.forEach(b=>b.classList.toggle('active', b.dataset.tab==='individual'));
+  panels.forEach(p=>p.classList.toggle('active', p.dataset.panel==='individual'));
+  tabMeta.textContent = metaText.individual;
+  iForm.classList.remove('hidden');
+  tForm.classList.remove('hidden');
+  setFormButtonLabels();
+  showRegisterFlow();
+});
+
+document.querySelector('.landing-card[data-choice="correction"]').addEventListener('click', ()=>{
+  searchForm.reset();
+  document.querySelectorAll('#searchForm .invalid').forEach(f=>f.classList.remove('invalid'));
+  searchMsg.style.display = 'none';
+  showCorrectionFlow();
+});
+
+document.getElementById('backFromRegister').addEventListener('click', ()=>{
+  formMode = 'create'; editingType = null; editingKey = null; editingRecord = null;
+  exitEditUI();
+  showLanding();
+});
+document.getElementById('backFromCorrection').addEventListener('click', showLanding);
+
+/* ---------- Validation helper ---------- */
+function validateField(id, input){
+  const field = document.getElementById(id);
+  const ok = input.value.trim().length > 0;
+  field.classList.toggle('invalid', !ok);
+  return ok;
+}
+
+/* ---------- Individual form ---------- */
+const iForm = document.getElementById('individualForm');
+const teamNameField = document.getElementById('i-teamname');
+const teamNameInput = iForm.teamName;
+const freeAgentCheck = document.getElementById('freeAgentCheck');
+const agePreview = document.getElementById('i-age-preview');
+
+function updateAgePreview(){
+  const age = calcAge(iForm.birthday.value);
+  agePreview.innerHTML = age !== null ? `現在の年齢:<strong>${age}歳</strong>(生年月日から自動計算・毎年自動更新されます)` : '';
+}
+iForm.birthday.addEventListener('input', updateAgePreview);
+
+freeAgentCheck.addEventListener('change', ()=>{
+  if(freeAgentCheck.checked){
+    teamNameInput.value = '';
+    teamNameInput.disabled = true;
+    teamNameField.classList.remove('invalid');
+    teamNameField.style.opacity = '.5';
+  } else {
+    teamNameInput.disabled = false;
+    teamNameField.style.opacity = '';
+  }
+});
+
+const iFieldMap = {name:'i-name', kana:'i-kana', birthday:'i-birthday', address:'i-address', tel:'i-tel', email:'i-email'};
+Object.keys(iFieldMap).forEach(n=>{
+  iForm[n].addEventListener('input', ()=>{ validateField(iFieldMap[n], iForm[n]); });
+});
+iForm.querySelectorAll('input[name="gender"]').forEach(r=>{
+  r.addEventListener('change', ()=>{ document.getElementById('i-gender').classList.remove('invalid'); });
+});
+teamNameInput.addEventListener('input', ()=>{ validateField('i-teamname', teamNameInput); });
+
+function resetIndividualForm(){
+  iForm.reset();
+  document.querySelectorAll('#individualForm .invalid').forEach(f=>f.classList.remove('invalid'));
+  teamNameInput.disabled = false;
+  teamNameField.style.opacity = '';
+  updateAgePreview();
+}
+function fillIndividualForm(rec){
+  iForm.name.value = rec.name || '';
+  iForm.kana.value = rec.kana || '';
+  iForm.birthday.value = rec.birthday || '';
+  updateAgePreview();
+  iForm.querySelectorAll('input[name="gender"]').forEach(r=>{ r.checked = (r.value === rec.gender); });
+  freeAgentCheck.checked = !!rec.freeAgent;
+  teamNameInput.disabled = !!rec.freeAgent;
+  teamNameField.style.opacity = rec.freeAgent ? '.5' : '';
+  teamNameInput.value = rec.teamName || '';
+  iForm.address.value = rec.address || '';
+  iForm.tel.value = rec.tel || '';
+  iForm.email.value = rec.email || '';
+}
+
+iForm.addEventListener('submit', async function(e){
+  e.preventDefault();
+  let valid = true;
+  Object.keys(iFieldMap).forEach(n=>{ valid = validateField(iFieldMap[n], iForm[n]) && valid; });
+
+  const genderChecked = iForm.querySelector('input[name="gender"]:checked');
+  const genderField = document.getElementById('i-gender');
+  genderField.classList.toggle('invalid', !genderChecked);
+  if(!genderChecked) valid = false;
+
+  if(!freeAgentCheck.checked){
+    valid = validateField('i-teamname', teamNameInput) && valid;
+  }
+
+  const agree = document.getElementById('i-agree');
+  const agreeBox = agree.closest('.agree');
+  if(!agree.checked){ valid = false; agreeBox.style.borderColor = '#B23A2E'; }
+  else{ agreeBox.style.borderColor = ''; }
+
+  if(!valid){
+    const bad = iForm.querySelector('.invalid') || (!agree.checked ? agreeBox : null);
+    if(bad) bad.scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+
+  const record = {
+    name: iForm.name.value.trim(),
+    kana: iForm.kana.value.trim(),
+    birthday: iForm.birthday.value,
+    gender: genderChecked.value,
+    teamName: freeAgentCheck.checked ? '' : teamNameInput.value.trim(),
+    freeAgent: freeAgentCheck.checked,
+    address: iForm.address.value.trim(),
+    tel: iForm.tel.value.trim(),
+    email: iForm.email.value.trim()
+  };
+
+  const isUpdate = (formMode === 'edit' && editingType === 'individual' && editingKey);
+  const submitBtn = iForm.querySelector('button.submit');
+  submitBtn.disabled = true;
+  submitBtn.textContent = '送信中...';
+
+  try{
+    let result;
+    if(isUpdate){
+      result = await apiCall('update', { type: 'individual', id: editingKey, payload: record });
+    } else {
+      result = await apiCall('create', { type: 'individual', payload: record });
+    }
+    const key = isUpdate ? editingKey : result.id;
+
+    editingType = 'individual'; editingKey = key; editingRecord = record; formMode = 'edit';
+
+    document.getElementById('successTitle').textContent = isUpdate ? '登録内容を更新しました' : 'ご登録ありがとうございます';
+    document.getElementById('successText').textContent = isUpdate
+      ? '個人登録の内容を更新しました。'
+      : '個人登録を受け付けました。協会事務局が確認の上、必要に応じてご連絡いたします。';
+    iForm.classList.add('hidden');
+    successCardEl.classList.add('show');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }catch(err){
+    console.error('保存に失敗しました', err);
+    alert(err.message || '送信に失敗しました。通信状況をご確認の上、もう一度お試しください。');
+  }finally{
+    submitBtn.disabled = false;
+    setFormButtonLabels();
+  }
+});
+
+/* ---------- Team member rows ---------- */
+const memberList = document.getElementById('memberList');
+const memberCountEl = document.getElementById('memberCount');
+const minNote = document.getElementById('minNote');
+const MIN_MEMBERS = 5;
+let memberIndex = 0;
+
+function genderSelectHTML(){
+  return `<select class="m-gender" required>
+      <option value="">性別</option>
+      <option value="male">男性</option>
+      <option value="female">女性</option>
+      <option value="other">その他</option>
+    </select>`;
+}
+
+function addMemberRow(data){
+  memberIndex++;
+  const row = document.createElement('div');
+  row.className = 'member-row';
+  row.innerHTML = `
+    <div class="member-num">${memberIndex}</div>
+    <input type="text" class="m-name" placeholder="氏名" required>
+    <input type="text" class="m-kana" placeholder="よみがな" required>
+    ${genderSelectHTML()}
+    <input type="text" class="m-note" placeholder="学年等" required>
+    <button type="button" class="member-remove" title="削除">×</button>
+  `;
+  memberList.appendChild(row);
+  if(data){
+    row.querySelector('.m-name').value = data.name || '';
+    row.querySelector('.m-kana').value = data.kana || '';
+    row.querySelector('.m-gender').value = data.gender || '';
+    row.querySelector('.m-note').value = data.note || '';
+  }
+  updateMemberUI();
+
+  row.querySelector('.member-remove').addEventListener('click', ()=>{
+    row.remove();
+    renumberRows();
+    updateMemberUI();
+  });
+}
+
+function renumberRows(){
+  const rows = memberList.querySelectorAll('.member-row');
+  rows.forEach((row,i)=>{ row.querySelector('.member-num').textContent = i+1; });
+  memberIndex = rows.length;
+}
+
+function updateMemberUI(){
+  const rows = memberList.querySelectorAll('.member-row');
+  const count = rows.length;
+  memberCountEl.textContent = count;
+  rows.forEach((row)=>{
+    const btn = row.querySelector('.member-remove');
+    btn.disabled = count <= MIN_MEMBERS;
+  });
+  minNote.classList.toggle('err', count < MIN_MEMBERS);
+}
+
+function setTeamMembers(members){
+  memberList.innerHTML = '';
+  memberIndex = 0;
+  const list = Array.isArray(members) ? members : [];
+  const count = Math.max(list.length, MIN_MEMBERS);
+  for(let i=0;i<count;i++){ addMemberRow(list[i] || null); }
+}
+
+setTeamMembers([]);
+document.getElementById('addMemberBtn').addEventListener('click', ()=>addMemberRow());
+
+/* ---------- Team form ---------- */
+const tForm = document.getElementById('teamForm');
+const tFieldMap = {teamName:'t-teamname', base:'t-base', activityTime:'t-activitytime', repName:'t-repname', repTel:'t-reptel', repEmail:'t-repemail'};
+Object.keys(tFieldMap).forEach(n=>{
+  tForm[n].addEventListener('input', ()=>{ validateField(tFieldMap[n], tForm[n]); });
+});
+
+function resetTeamForm(){
+  tForm.reset();
+  document.querySelectorAll('#teamForm .invalid').forEach(f=>f.classList.remove('invalid'));
+  setTeamMembers([]);
+}
+function fillTeamForm(rec){
+  tForm.teamName.value = rec.teamName || '';
+  tForm.base.value = rec.base || '';
+  tForm.activityTime.value = rec.activityTime || '';
+  tForm.repName.value = rec.repName || '';
+  tForm.repTel.value = rec.repTel || '';
+  tForm.repEmail.value = rec.repEmail || '';
+  setTeamMembers(rec.members || []);
+}
+
+tForm.addEventListener('submit', async function(e){
+  e.preventDefault();
+  let valid = true;
+  Object.keys(tFieldMap).forEach(n=>{ valid = validateField(tFieldMap[n], tForm[n]) && valid; });
+
+  const rows = memberList.querySelectorAll('.member-row');
+  let memberValid = rows.length >= MIN_MEMBERS;
+  const members = [];
+  rows.forEach(row=>{
+    const name = row.querySelector('.m-name').value.trim();
+    const kana = row.querySelector('.m-kana').value.trim();
+    const gender = row.querySelector('.m-gender').value.trim();
+    const note = row.querySelector('.m-note').value.trim();
+    const rowOk = name && kana && gender && note;
+    row.classList.toggle('invalid', !rowOk);
+    if(!rowOk) memberValid = false;
+    members.push({name, kana, gender, note});
+  });
+  minNote.classList.toggle('err', !memberValid);
+  if(!memberValid) valid = false;
+
+  const agree = document.getElementById('t-agree');
+  const agreeBox = agree.closest('.agree');
+  if(!agree.checked){ valid = false; agreeBox.style.borderColor = '#B23A2E'; }
+  else{ agreeBox.style.borderColor = ''; }
+
+  if(!valid){
+    const bad = tForm.querySelector('.invalid') || memberList.querySelector('.member-row.invalid') || (!agree.checked ? agreeBox : null);
+    if(bad) bad.scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+
+  const record = {
+    teamName: tForm.teamName.value.trim(),
+    base: tForm.base.value.trim(),
+    activityTime: tForm.activityTime.value.trim(),
+    repName: tForm.repName.value.trim(),
+    repTel: tForm.repTel.value.trim(),
+    repEmail: tForm.repEmail.value.trim(),
+    members
+  };
+
+  const isUpdate = (formMode === 'edit' && editingType === 'team' && editingKey);
+  const submitBtn = tForm.querySelector('button.submit');
+  submitBtn.disabled = true;
+  submitBtn.textContent = '送信中...';
+
+  try{
+    let result;
+    if(isUpdate){
+      result = await apiCall('update', { type: 'team', id: editingKey, payload: record });
+    } else {
+      result = await apiCall('create', { type: 'team', payload: record });
+    }
+    const key = isUpdate ? editingKey : result.id;
+
+    editingType = 'team'; editingKey = key; editingRecord = record; formMode = 'edit';
+
+    document.getElementById('successTitle').textContent = isUpdate ? '登録内容を更新しました' : '団体登録ありがとうございます';
+    document.getElementById('successText').textContent = isUpdate
+      ? `団体登録の内容を更新しました(登録人数:${members.length}名)。`
+      : `団体登録を受け付けました(登録人数:${members.length}名)。協会事務局が確認の上、必要に応じてご連絡いたします。`;
+    tForm.classList.add('hidden');
+    successCardEl.classList.add('show');
+    window.scrollTo({top:0, behavior:'smooth'});
+  }catch(err){
+    console.error('保存に失敗しました', err);
+    alert(err.message || '送信に失敗しました。通信状況をご確認の上、もう一度お試しください。');
+  }finally{
+    submitBtn.disabled = false;
+    setFormButtonLabels();
+  }
+});
+
+/* ---------- Search (correction) form ---------- */
+const searchForm = document.getElementById('searchForm');
+const searchBtn = document.getElementById('searchBtn');
+const searchMsg = document.getElementById('searchMsg');
+const sFieldMap = {sName:'s-name', sTel:'s-tel'};
+Object.keys(sFieldMap).forEach(n=>{
+  searchForm[n].addEventListener('input', ()=>{ validateField(sFieldMap[n], searchForm[n]); });
+});
+searchForm.querySelectorAll('input[name="sType"]').forEach(r=>{
+  r.addEventListener('change', ()=>{ document.getElementById('s-type').classList.remove('invalid'); });
+});
+
+searchForm.addEventListener('submit', async function(e){
+  e.preventDefault();
+  let valid = true;
+  const typeChecked = searchForm.querySelector('input[name="sType"]:checked');
+  document.getElementById('s-type').classList.toggle('invalid', !typeChecked);
+  if(!typeChecked) valid = false;
+  Object.keys(sFieldMap).forEach(n=>{ valid = validateField(sFieldMap[n], searchForm[n]) && valid; });
+
+  searchMsg.style.display = 'none';
+  if(!valid){
+    const bad = searchForm.querySelector('.invalid');
+    if(bad) bad.scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+
+  const type = typeChecked.value;
+  searchBtn.disabled = true;
+  searchBtn.textContent = '検索中...';
+
+  try{
+    const result = await apiCall('search', { type, name: searchForm.sName.value, tel: searchForm.sTel.value });
+    if(result.ok && result.record){
+      editingType = type; editingKey = result.id; editingRecord = result.record; formMode = 'edit';
+      if(type === 'individual'){ fillIndividualForm(result.record); }
+      else { fillTeamForm(result.record); }
+      setFormButtonLabels();
+      enterEditUI(type);
+      iForm.classList.remove('hidden');
+      tForm.classList.remove('hidden');
+      showRegisterFlow();
+    } else {
+      searchMsg.textContent = '該当する登録が見つかりませんでした。入力内容をご確認いただくか、新規登録をご利用ください。';
+      searchMsg.classList.add('err');
+      searchMsg.style.display = 'block';
+    }
+  }catch(err){
+    console.error('検索に失敗しました', err);
+    searchMsg.textContent = err.message || '検索中にエラーが発生しました。もう一度お試しください。';
+    searchMsg.classList.add('err');
+    searchMsg.style.display = 'block';
+  }finally{
+    searchBtn.disabled = false;
+    searchBtn.textContent = '検索する';
+  }
+});
+
+/* ---------- Success screen actions ---------- */
+document.getElementById('editBtn').addEventListener('click', ()=>{
+  successCardEl.classList.remove('show');
+  if(editingType){
+    enterEditUI(editingType);
+    if(editingType === 'individual'){ iForm.classList.remove('hidden'); }
+    else { tForm.classList.remove('hidden'); }
+  }
+  showRegisterFlow();
+});
+document.getElementById('backToLandingBtn').addEventListener('click', ()=>{
+  formMode = 'create'; editingType = null; editingKey = null; editingRecord = null;
+  exitEditUI();
+  showLanding();
+});
+
+/* ---------- 初期表示 ---------- */
+showLanding();
+</script>
+</body>
+</html>
