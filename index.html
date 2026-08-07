@@ -131,32 +131,18 @@ body {
 
 /* Member rows */
 .member-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
-.member-row {
-  display: grid; grid-template-columns: 22px 1fr 1fr auto auto 28px;
-  gap: 6px; align-items: center; background: var(--bg);
-  border: 1px solid var(--border); border-radius: 9px; padding: 9px;
+.member-type-btn {
+  padding: 8px 20px; border: 1px solid var(--border); border-radius: 99px;
+  background: var(--bg); color: var(--text-soft); font-family: inherit;
+  font-size: 13px; font-weight: 700; cursor: pointer; transition: all .15s;
 }
-.member-row.err { border-color: var(--error); }
-@media(max-width:560px){
-  .member-row { grid-template-columns: 1fr 1fr; }
-  .m-num, .m-del { display: none; }
-}
-.m-num { font-size: 12px; font-weight: 700; color: var(--green); text-align: center; }
-.member-row input, .member-row select { padding: 7px 8px; font-size: 13px; background: #fff; }
-.m-del {
-  background: none; border: none; color: var(--text-soft);
-  font-size: 16px; cursor: pointer; border-radius: 5px; padding: 2px 5px;
-}
-.m-del:hover { background: #f2ddd2; color: var(--error); }
-.m-del:disabled { opacity: .25; cursor: not-allowed; }
-.add-member-btn {
-  width: 100%; padding: 10px; border: 1.5px dashed var(--orange);
-  background: #FDF3EA; color: var(--orange-dark); font-weight: 700;
-  font-size: 13px; border-radius: 9px; cursor: pointer; font-family: inherit;
-}
-.add-member-btn:hover { background: #fbe7d4; }
-.member-count { font-size: 11.5px; color: var(--text-soft); margin-top: 6px; }
-.member-count.err { color: var(--error); font-weight: 700; }
+.member-type-btn.active { background: var(--green); border-color: var(--green); color: #fff; }
+.member-row-g { display: grid; grid-template-columns: 22px 1fr 1fr auto auto 90px 28px; gap: 6px; align-items: center; background: var(--bg); border: 1px solid var(--border); border-radius: 9px; padding: 9px; margin-bottom: 8px; }
+.member-row-e { display: grid; grid-template-columns: 22px 1fr 1fr auto auto 90px 28px; gap: 6px; align-items: center; background: #F0F7FF; border: 1px solid #C5D9F0; border-radius: 9px; padding: 9px; margin-bottom: 8px; }
+.member-row-g.err, .member-row-e.err { border-color: var(--error); }
+@media(max-width:560px){ .member-row-g, .member-row-e { grid-template-columns: 1fr 1fr; } }
+.m-auto { font-size: 11px; font-weight: 700; color: var(--green); white-space: nowrap; }
+.member-row-e .m-auto { color: #2563EB; }
 
 /* Agree */
 .agree {
@@ -361,9 +347,21 @@ body {
 
         <div class="card-title">メンバー登録(5名以上)</div>
         <div class="sec">
-          <div class="member-list" id="memberList"></div>
-          <button type="button" class="add-member-btn" id="btnAddMember">＋ メンバーを追加</button>
-          <div class="member-count" id="memberCount">登録人数：5名</div>
+          <div style="display:flex;gap:8px;margin-bottom:14px;">
+            <button type="button" class="member-type-btn active" data-mtype="general">一般</button>
+            <button type="button" class="member-type-btn" data-mtype="elementary">小学生</button>
+          </div>
+          <div id="memberListGeneral" class="member-section">
+            <div style="font-size:12px;color:var(--text-soft);margin-bottom:8px;">生年月日を入力すると年齢が自動表示されます</div>
+            <div class="member-list" id="memberListG"></div>
+            <button type="button" class="add-member-btn" id="btnAddGeneral">＋ 一般メンバーを追加</button>
+          </div>
+          <div id="memberListElementary" class="member-section hidden">
+            <div style="font-size:12px;color:var(--text-soft);margin-bottom:8px;">生年月日を入力すると学年が自動表示されます</div>
+            <div class="member-list" id="memberListE"></div>
+            <button type="button" class="add-member-btn" id="btnAddElementary">＋ 小学生メンバーを追加</button>
+          </div>
+          <div class="member-count" id="memberCount">登録人数：0名（一般0名・小学生0名）</div>
         </div>
       </div>
 
@@ -495,46 +493,130 @@ document.getElementById('btnToEdit').addEventListener('click',()=>{
 document.getElementById('backFromRegister').addEventListener('click',()=>show('pageLanding'));
 document.getElementById('backFromSearch').addEventListener('click',()=>show('pageLanding'));
 
-/* ---- メンバー行 ---- */
-function addMemberRow(data){
-  memberCount++;
-  const row = document.createElement('div');
-  row.className = 'member-row';
-  row.innerHTML = `
-    <div class="m-num">${document.querySelectorAll('.member-row').length+1}</div>
-    <input type="text" class="m-name" placeholder="氏名" value="${data?data.name||'':''}">
-    <input type="text" class="m-kana" placeholder="よみがな" value="${data?data.kana||'':''}">
+/* ---- メンバー行（一般・小学生） ---- */
+function calcGrade(birthday){
+  if(!birthday) return '';
+  const b = new Date(birthday + 'T00:00:00');
+  if(isNaN(b.getTime())) return '';
+  const now = new Date();
+  let schoolYear = now.getFullYear() - b.getFullYear();
+  const cutoff = new Date(now.getFullYear(), 3, 2);
+  if(now < cutoff) schoolYear--;
+  const grade = schoolYear - 6;
+  if(grade >= 1 && grade <= 6) return '小学'+grade+'年生';
+  if(grade < 1) return '未就学';
+  return '小学生以上';
+}
+function calcAge2(d){
+  if(!d) return '';
+  const b=new Date(d+'T00:00:00'), now=new Date();
+  let a=now.getFullYear()-b.getFullYear();
+  if(now.getMonth()<b.getMonth()||(now.getMonth()===b.getMonth()&&now.getDate()<b.getDate())) a--;
+  return a>=0 ? a+'歳' : '';
+}
+function escHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+function makeDelBtn(){ const btn=document.createElement('button'); btn.type='button'; btn.className='m-del'; btn.textContent='×'; return btn; }
+function renumRows(list,cls){ list.querySelectorAll('.'+cls).forEach((r,i)=>{ const n=r.querySelector('.m-num'); if(n) n.textContent=i+1; }); }
+
+function addGeneralRow(data){
+  const list=document.getElementById('memberListG');
+  const row=document.createElement('div'); row.className='member-row-g';
+  row.innerHTML=`
+    <div class="m-num">${list.querySelectorAll('.member-row-g').length+1}</div>
+    <input type="text" class="m-name" placeholder="氏名" value="${data?escHtml(data.name||''):''}">
+    <input type="text" class="m-kana" placeholder="よみがな" value="${data?escHtml(data.kana||''):''}">
     <select class="m-gender">
       <option value="">性別</option>
       <option value="male" ${data&&data.gender==='male'?'selected':''}>男性</option>
       <option value="female" ${data&&data.gender==='female'?'selected':''}>女性</option>
       <option value="other" ${data&&data.gender==='other'?'selected':''}>その他</option>
     </select>
-    <input type="text" class="m-note" placeholder="学年等" value="${data?data.note||'':''}">
-    <button type="button" class="m-del">×</button>`;
-  document.getElementById('memberList').appendChild(row);
-  row.querySelector('.m-del').addEventListener('click',()=>{
-    if(document.querySelectorAll('.member-row').length<=MIN_MEMBERS) return;
-    row.remove(); updateMemberNums(); updateMemberCount();
-  });
-  updateMemberNums(); updateMemberCount();
+    <input type="date" class="m-birthday" value="${data?escHtml(data.birthday||''):''}">
+    <div class="m-auto">${data&&data.birthday?calcAge2(data.birthday):''}</div>`;
+  const del=makeDelBtn(); row.appendChild(del); list.appendChild(row);
+  row.querySelector('.m-birthday').addEventListener('input',function(){ row.querySelector('.m-auto').textContent=calcAge2(this.value); });
+  del.addEventListener('click',()=>{ row.remove(); renumRows(list,'member-row-g'); updateMemberCount(); });
+  renumRows(list,'member-row-g'); updateMemberCount();
 }
-function updateMemberNums(){
-  document.querySelectorAll('.member-row').forEach((r,i)=>{ const n=r.querySelector('.m-num'); if(n) n.textContent=i+1; });
+
+function addElementaryRow(data){
+  const list=document.getElementById('memberListE');
+  const row=document.createElement('div'); row.className='member-row-e';
+  row.innerHTML=`
+    <div class="m-num" style="color:#2563EB">${list.querySelectorAll('.member-row-e').length+1}</div>
+    <input type="text" class="m-name" placeholder="氏名" value="${data?escHtml(data.name||''):''}">
+    <input type="text" class="m-kana" placeholder="よみがな" value="${data?escHtml(data.kana||''):''}">
+    <select class="m-gender">
+      <option value="">性別</option>
+      <option value="male" ${data&&data.gender==='male'?'selected':''}>男性</option>
+      <option value="female" ${data&&data.gender==='female'?'selected':''}>女性</option>
+      <option value="other" ${data&&data.gender==='other'?'selected':''}>その他</option>
+    </select>
+    <input type="date" class="m-birthday" value="${data?escHtml(data.birthday||''):''}">
+    <div class="m-auto">${data&&data.birthday?calcGrade(data.birthday):''}</div>`;
+  const del=makeDelBtn(); row.appendChild(del); list.appendChild(row);
+  row.querySelector('.m-birthday').addEventListener('input',function(){ row.querySelector('.m-auto').textContent=calcGrade(this.value); });
+  del.addEventListener('click',()=>{ row.remove(); renumRows(list,'member-row-e'); updateMemberCount(); });
+  renumRows(list,'member-row-e'); updateMemberCount();
 }
+
 function updateMemberCount(){
-  const n=document.querySelectorAll('.member-row').length;
+  const g=document.getElementById('memberListG').querySelectorAll('.member-row-g').length;
+  const e=document.getElementById('memberListE').querySelectorAll('.member-row-e').length;
+  const total=g+e;
   const el=document.getElementById('memberCount');
-  el.textContent='登録人数：'+n+'名'+(n<MIN_MEMBERS?' (5名以上必須)':'');
-  el.classList.toggle('err',n<MIN_MEMBERS);
-  document.querySelectorAll('.m-del').forEach(b=>{ b.disabled=n<=MIN_MEMBERS; });
+  el.textContent='登録人数：'+total+'名（一般'+g+'名・小学生'+e+'名）'+(total<MIN_MEMBERS?' ※5名以上必須':'');
+  el.classList.toggle('err',total<MIN_MEMBERS);
 }
+
 function initMembers(list){
-  document.getElementById('memberList').innerHTML=''; memberCount=0;
-  const items = (list&&list.length>=MIN_MEMBERS) ? list : [...(list||[]),...Array(Math.max(0,MIN_MEMBERS-(list||[]).length)).fill(null)];
-  items.forEach(d=>addMemberRow(d));
+  document.getElementById('memberListG').innerHTML='';
+  document.getElementById('memberListE').innerHTML='';
+  const general=(list||[]).filter(m=>m.category!=='elementary');
+  const elementary=(list||[]).filter(m=>m.category==='elementary');
+  const gCount=Math.max(general.length,MIN_MEMBERS);
+  for(let i=0;i<gCount;i++) addGeneralRow(general[i]||null);
+  elementary.forEach(m=>addElementaryRow(m));
+  updateMemberCount();
 }
-document.getElementById('btnAddMember').addEventListener('click',()=>addMemberRow(null));
+
+function collectMembers(){
+  const members=[];
+  document.getElementById('memberListG').querySelectorAll('.member-row-g').forEach(r=>{
+    members.push({category:'general',name:r.querySelector('.m-name').value.trim(),kana:r.querySelector('.m-kana').value.trim(),gender:r.querySelector('.m-gender').value,birthday:r.querySelector('.m-birthday').value,note:calcAge2(r.querySelector('.m-birthday').value)});
+  });
+  document.getElementById('memberListE').querySelectorAll('.member-row-e').forEach(r=>{
+    members.push({category:'elementary',name:r.querySelector('.m-name').value.trim(),kana:r.querySelector('.m-kana').value.trim(),gender:r.querySelector('.m-gender').value,birthday:r.querySelector('.m-birthday').value,note:calcGrade(r.querySelector('.m-birthday').value)});
+  });
+  return members;
+}
+
+function validateMembers(){
+  let ok=true;
+  const g=document.getElementById('memberListG').querySelectorAll('.member-row-g').length;
+  const e=document.getElementById('memberListE').querySelectorAll('.member-row-e').length;
+  if(g+e<MIN_MEMBERS) ok=false;
+  document.getElementById('memberListG').querySelectorAll('.member-row-g').forEach(r=>{
+    const rOk=r.querySelector('.m-name').value.trim()&&r.querySelector('.m-kana').value.trim()&&r.querySelector('.m-gender').value&&r.querySelector('.m-birthday').value;
+    r.classList.toggle('err',!rOk); if(!rOk) ok=false;
+  });
+  document.getElementById('memberListE').querySelectorAll('.member-row-e').forEach(r=>{
+    const rOk=r.querySelector('.m-name').value.trim()&&r.querySelector('.m-kana').value.trim()&&r.querySelector('.m-gender').value&&r.querySelector('.m-birthday').value;
+    r.classList.toggle('err',!rOk); if(!rOk) ok=false;
+  });
+  updateMemberCount(); return ok;
+}
+
+/* ---- 一般/小学生タブ切替 ---- */
+document.querySelectorAll('.member-type-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.member-type-btn').forEach(b=>b.classList.toggle('active',b===btn));
+    document.getElementById('memberListGeneral').classList.toggle('hidden',btn.dataset.mtype!=='general');
+    document.getElementById('memberListElementary').classList.toggle('hidden',btn.dataset.mtype!=='elementary');
+  });
+});
+document.getElementById('btnAddGeneral').addEventListener('click',()=>addGeneralRow(null));
+document.getElementById('btnAddElementary').addEventListener('click',()=>addElementaryRow(null));
 
 /* ---- フリーチェック ---- */
 document.getElementById('i-free').addEventListener('change',function(){
@@ -612,18 +694,9 @@ document.getElementById('formTeam').addEventListener('submit', async function(e)
   ok=vField('t-rep',document.getElementById('t-rep').value)&&ok;
   ok=vField('t-tel',document.getElementById('t-tel').value)&&ok;
   ok=vField('t-email',document.getElementById('t-email').value)&&ok;
-  const rows=[...document.querySelectorAll('.member-row')];
-  let mOk=rows.length>=MIN_MEMBERS;
-  const members=[];
-  rows.forEach(r=>{
-    const n=r.querySelector('.m-name').value.trim();
-    const k=r.querySelector('.m-kana').value.trim();
-    const g=r.querySelector('.m-gender').value;
-    const nt=r.querySelector('.m-note').value.trim();
-    const rOk=n&&k&&g&&nt; r.classList.toggle('err',!rOk); if(!rOk) mOk=false;
-    members.push({name:n,kana:k,gender:g,note:nt});
-  });
-  document.getElementById('memberCount').classList.toggle('err',!mOk); if(!mOk) ok=false;
+  const mOk = validateMembers();
+  if(!mOk) ok = false;
+  const members = collectMembers();
   const agreeEl=document.getElementById('agree-t');
   const agreed=document.getElementById('t-agree').checked;
   agreeEl.classList.toggle('err',!agreed); if(!agreed) ok=false;
