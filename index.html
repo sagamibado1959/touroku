@@ -112,6 +112,12 @@ body{font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans',Meiryo,sans-serif;b
 .success-wrap h2{font-size:18px;color:var(--green-dark);margin-bottom:8px;}
 .success-wrap p{font-size:13px;color:var(--text-soft);}
 .hidden{display:none!important;}
+/* 料金ボックス */
+.fee-box{background:linear-gradient(135deg,#FFF8F0,#FFF3E5);border:2px solid var(--orange);border-radius:12px;padding:16px 20px;margin-bottom:16px;text-align:center;}
+.fee-label{font-size:12px;font-weight:700;color:var(--orange-dark);letter-spacing:.08em;margin-bottom:6px;}
+.fee-amount{font-size:32px;font-weight:900;color:var(--orange-dark);line-height:1;margin-bottom:6px;}
+.fee-amount .fee-unit{font-size:16px;font-weight:700;}
+.fee-note{font-size:12px;color:var(--text-soft);}
 </style>
 </head>
 <body>
@@ -208,6 +214,11 @@ body{font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans',Meiryo,sans-serif;b
           </div>
         </div>
       </div>
+      <div class="fee-box" id="feeBox-individual">
+        <div class="fee-label">登録料金</div>
+        <div class="fee-amount">¥<span class="fee-num">500</span><span class="fee-unit">円</span></div>
+        <div class="fee-note">個人登録：1名 × 500円</div>
+      </div>
       <div class="agree" id="agree-i"><input type="checkbox" id="agree-cb-i"><label for="agree-cb-i">ご記入いただいた個人情報は、協会の会員管理・連絡目的にのみ使用し、第三者へ提供することはありません。上記内容に同意の上、送信します。</label></div>
       <button type="submit" class="btn-submit" id="btnSubmitIndividual">個人登録を送信する</button>
     </form>
@@ -245,6 +256,11 @@ body{font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans',Meiryo,sans-serif;b
           <div class="member-count" id="memberCount-tg">登録人数：0名</div>
         </div>
       </div>
+      <div class="fee-box" id="feeBox-tg">
+        <div class="fee-label">登録料金</div>
+        <div class="fee-amount">¥<span id="fee-num-tg">0</span><span class="fee-unit">円</span></div>
+        <div class="fee-note" id="fee-note-tg">0名 × 300円</div>
+      </div>
       <div class="agree" id="agree-tg"><input type="checkbox" id="agree-cb-tg"><label for="agree-cb-tg">ご記入いただいた個人情報は、協会の会員管理・連絡目的にのみ使用し、第三者へ提供することはありません。全メンバーの同意を確認の上、送信します。</label></div>
       <button type="submit" class="btn-submit" id="btnSubmitGeneral">一般団体登録を送信する</button>
     </form>
@@ -281,6 +297,11 @@ body{font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans',Meiryo,sans-serif;b
           <button type="button" class="add-member-btn" id="btnAdd-te">＋ メンバーを追加</button>
           <div class="member-count" id="memberCount-te">登録人数：0名</div>
         </div>
+      </div>
+      <div class="fee-box" id="feeBox-te">
+        <div class="fee-label">登録料金</div>
+        <div class="fee-amount">¥<span id="fee-num-te">0</span><span class="fee-unit">円</span></div>
+        <div class="fee-note" id="fee-note-te">0名 × 300円</div>
       </div>
       <div class="agree" id="agree-te"><input type="checkbox" id="agree-cb-te"><label for="agree-cb-te">ご記入いただいた個人情報は、協会の会員管理・連絡目的にのみ使用し、第三者へ提供することはありません。全メンバーの同意を確認の上、送信します。</label></div>
       <button type="submit" class="btn-submit" id="btnSubmitElementary" style="background:var(--blue)">小学生団体登録を送信する</button>
@@ -338,6 +359,11 @@ body{font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans',Meiryo,sans-serif;b
       <div class="success-ring">✓</div>
       <h2 id="successTitle">ご登録ありがとうございます</h2>
       <p id="successText">内容を受け付けました。</p>
+      <div class="fee-box" id="successFeeBox" style="margin:16px auto;max-width:280px;display:none;">
+        <div class="fee-label">登録料金</div>
+        <div class="fee-amount">¥<span id="successFeeNum">0</span><span class="fee-unit">円</span></div>
+        <div class="fee-note" id="successFeeNote"></div>
+      </div>
       <button class="btn-outline" id="btnEditAfter">この内容をさらに修正する</button>
       <button class="btn-outline" id="btnBackToTop" style="margin-top:8px;">最初の画面に戻る</button>
     </div>
@@ -477,6 +503,12 @@ function updateCount(prefix){
   const el=document.getElementById('memberCount-'+prefix);
   el.textContent='登録人数：'+n+'名'+(n<MIN?' ※5名以上必須':'');
   el.classList.toggle('err',n<MIN);
+  // 料金更新
+  const fee=n*300;
+  const numEl=document.getElementById('fee-num-'+prefix);
+  const noteEl=document.getElementById('fee-note-'+prefix);
+  if(numEl) numEl.textContent=fee.toLocaleString();
+  if(noteEl) noteEl.textContent=n+'名 × 300円';
 }
 function initMembersFor(prefix,category,list){
   document.getElementById('memberList-'+prefix).innerHTML='';
@@ -550,6 +582,9 @@ document.getElementById('formIndividual').addEventListener('submit',async functi
     editId=res.id||editId; editType='individual'; editMode=true;
     document.getElementById('successTitle').textContent=res.updated?'登録内容を更新しました':'ご登録ありがとうございます';
     document.getElementById('successText').textContent='個人登録を受け付けました。';
+    document.getElementById('successFeeBox').style.display='block';
+    document.getElementById('successFeeNum').textContent='500';
+    document.getElementById('successFeeNote').textContent='個人登録：1名 × 500円';
     show('pageSuccess');
   }catch(err){alert(err.message);}
   finally{btn.disabled=false;btn.textContent=editMode?'登録内容を更新する':'個人登録を送信する';}
@@ -583,6 +618,10 @@ async function submitTeam(prefix,category,submitId,tabKey){
     editId=res.id||editId; editType=tabKey; editMode=true;
     document.getElementById('successTitle').textContent=res.updated?'登録内容を更新しました':(category==='elementary'?'小学生団体登録ありがとうございます':'一般団体登録ありがとうございます');
     document.getElementById('successText').textContent='団体登録を受け付けました（'+members.length+'名）。';
+    const totalFee=members.length*300;
+    document.getElementById('successFeeBox').style.display='block';
+    document.getElementById('successFeeNum').textContent=totalFee.toLocaleString();
+    document.getElementById('successFeeNote').textContent=members.length+'名 × 300円 = '+totalFee.toLocaleString()+'円';
     show('pageSuccess');
   }catch(err){alert(err.message);}
   finally{btn.disabled=false;btn.textContent=editMode?'登録内容を更新する':(category==='elementary'?'小学生団体登録を送信する':'一般団体登録を送信する');}
@@ -707,6 +746,10 @@ document.getElementById('btnUploadSubmit').addEventListener('click',async functi
     await api('create',{type:'team',payload});
     document.getElementById('successTitle').textContent='一括登録が完了しました';
     document.getElementById('successText').textContent=finalTeamName+'（'+members.length+'名）を登録しました。';
+    const uploadFee=members.length*300;
+    document.getElementById('successFeeBox').style.display='block';
+    document.getElementById('successFeeNum').textContent=uploadFee.toLocaleString();
+    document.getElementById('successFeeNote').textContent=members.length+'名 × 300円 = '+uploadFee.toLocaleString()+'円';
     show('pageSuccess');
   }catch(err){alert(err.message);}
   finally{this.disabled=false;this.textContent='この内容で登録する';}
@@ -772,7 +815,9 @@ document.getElementById('btnEditAfter').addEventListener('click',()=>{
   show('pageRegister');
 });
 document.getElementById('btnBackToTop').addEventListener('click',()=>{
-  editMode=false;editType=null;editId=null;show('pageLanding');
+  editMode=false;editType=null;editId=null;
+  document.getElementById('successFeeBox').style.display='none';
+  show('pageLanding');
 });
 
 /* ---- 初期化 ---- */
