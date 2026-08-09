@@ -137,7 +137,7 @@ body{font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans',Meiryo,sans-serif;b
       <button class="landing-btn upload-btn" id="btnToUpload">
         <div class="lb-icon">📂</div>
         <div class="lb-title">名簿Excelで一括登録</div>
-        <div class="lb-desc">協会名簿フォーマットのExcelを読み込む</div>
+        <div class="lb-desc">協会登録名簿（xls/xlsx）を読み込んで一括登録</div>
       </button>
     </div>
   </div>
@@ -292,12 +292,12 @@ body{font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans',Meiryo,sans-serif;b
     <button class="btn-back" id="backFromUpload">← 最初の画面に戻る</button>
     <div class="card">
       <div class="card-title">名簿Excelで一括登録</div>
-      <p style="font-size:13px;color:var(--text-soft);margin-bottom:16px;">協会の登録名簿フォーマット（R7kyoukaitourokumeibo_〇〇.xlsx）をアップロードしてください。団体情報・メンバー全員を自動で読み込みます。</p>
+      <p style="font-size:13px;color:var(--text-soft);margin-bottom:16px;">協会登録名簿（協会登録名簿_〇〇.xls または R7kyoukaitourokumeibo_〇〇.xlsx）をアップロードしてください。団体情報とメンバー全員を自動で読み込みます。<br><small style="color:#B23A2E;">※ チーム名が空欄の場合は読み込み後に入力できます。</small></p>
       <label class="upload-area" id="uploadArea">
         <input type="file" id="xlsxFile" accept=".xlsx,.xls">
         <div class="upload-icon">📂</div>
         <p><strong>クリックしてファイルを選択</strong><br>または、ここにドラッグ＆ドロップ</p>
-        <p style="margin-top:8px;font-size:12px;">対応形式：.xlsx / .xls</p>
+        <p style="margin-top:8px;font-size:12px;">対応形式：.xls / .xlsx（協会登録名簿フォーマット）</p>
       </label>
       <div class="upload-msg" id="uploadMsg"></div>
       <div class="upload-preview" id="uploadPreview">
@@ -596,37 +596,53 @@ function parseXlsx(file){
     const reader=new FileReader();
     reader.onload=e=>{
       try{
-        const wb=XLSX.read(e.target.result,{type:'array'});
+        const wb=XLSX.read(e.target.result,{type:'array',cellDates:true});
         const ws=wb.Sheets[wb.SheetNames[0]];
-        const rows=XLSX.utils.sheet_to_json(ws,{header:1,defval:''});
-        // 団体情報読み取り（行インデックスで取得）
-        const cell=(r,c)=>{ const v=rows[r]?rows[r][c]:''; return String(v||'').trim(); };
-        const teamInfo={
-          teamName: cell(2,3),
-          base: cell(3,3),
-          activityTime: cell(4,3),
-          condition: cell(5,3),
-          repName: cell(6,3),
-          repTel: cell(7,3),
-          repEmail: cell(8,3),
+        const rows=XLSX.utils.sheet_to_json(ws,{header:1,defval:'',raw:false});
+        // セル取得ヘルパー
+        const cell=(r,c)=>{
+          const v=rows[r]?rows[r][c]:'';
+          return String(v||'').trim();
         };
-        // メンバー読み取り（11行目以降、№が数値の行）
+        // 生年月日フォーマット変換（日付文字列 or シリアル値）
+        function parseBirthday(raw){
+          if(!raw) return '';
+          // XLSX.jsがcellDates:trueで変換した日付文字列 (例: "1951/1/11" or "1951-01-11")
+          if(typeof raw==='string'){
+            const m=raw.match(/(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})/);
+            if(m) return m[1]+'-'+m[2].padStart(2,'0')+'-'+m[3].padStart(2,'0');
+            return raw;
+          }
+          return '';
+        }
+        // 団体情報（行インデックス固定）
+        const teamInfo={
+          teamName: cell(2,3)||cell(2,1)||'',
+          base:     cell(3,3)||cell(3,1)||'',
+          activityTime: cell(4,3)||cell(4,1)||'',
+          condition:    cell(5,3)||cell(5,1)||'',
+          repName:  cell(6,3)||cell(6,1)||'',
+          repTel:   cell(7,3)||cell(7,1)||'',
+          repEmail: cell(8,3)||cell(8,1)||'',
+        };
+        // メンバー（11行目以降、1列目が番号の行）
         const members=[];
         for(let i=11;i<rows.length;i++){
           const r=rows[i];
-          if(!r||!r[0]||isNaN(Number(r[0]))) continue;
-          const raw=r[3];
-          let bday='';
-          if(raw instanceof Date){bday=raw.toISOString().slice(0,10);}
-          else if(typeof raw==='number'){const d=new Date(Math.round((raw-25569)*86400*1000));bday=d.toISOString().slice(0,10);}
-          else if(typeof raw==='string'&&raw.trim()){bday=raw.trim();}
-          if(!String(r[1]||'').trim()) continue;
+          if(!r||r[0]===''||r[0]===null||r[0]===undefined) continue;
+          const num=parseFloat(String(r[0]));
+          if(isNaN(num)) continue;
+          const name=String(r[1]||'').replace(/[　\s]+/g,' ').trim();
+          if(!name) continue;
           members.push({
-            name:String(r[1]||'').replace(/[\u3000\s]+/g,' ').trim(),
-            kana:'', gender:String(r[2]||'').trim(),
-            birthday:bday, address:String(r[4]||'').trim(),
-            tel:String(r[5]||'').trim(), qual:String(r[6]||'').trim(),
-            school:String(r[7]||'').trim(),
+            name,
+            kana:'',
+            gender: String(r[2]||'').trim(),
+            birthday: parseBirthday(r[3]),
+            address: String(r[4]||'').trim(),
+            tel: String(r[5]||'').trim(),
+            qual: String(r[6]||'').trim(),
+            school: String(r[7]||'').trim(),
             note:''
           });
         }
@@ -640,7 +656,9 @@ function parseXlsx(file){
 
 function showPreview(data){
   const{teamInfo,members}=data;
-  document.getElementById('previewTitle').textContent=teamInfo.teamName||'（団体名未記入）';
+  const tn=teamInfo.teamName||'';
+  document.getElementById('previewTitle').innerHTML=
+    '<input type="text" id="previewTeamNameInput" style="font-size:15px;font-weight:700;width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:7px;background:var(--bg);" placeholder="チーム名を入力してください" value="'+escH(tn)+'">';
   document.getElementById('previewTeam').innerHTML=`
     <div class="preview-row"><span class="preview-label">練習場所：</span>${escH(teamInfo.base)}</div>
     <div class="preview-row"><span class="preview-label">練習日時：</span>${escH(teamInfo.activityTime)}</div>
@@ -675,8 +693,11 @@ ua.addEventListener('drop',e=>{e.preventDefault();ua.style.background='';const f
 document.getElementById('btnUploadSubmit').addEventListener('click',async function(){
   if(!uploadedPayload) return;
   const{teamInfo,members}=uploadedPayload;
+  const inputEl=document.getElementById('previewTeamNameInput');
+  const finalTeamName=inputEl?inputEl.value.trim():teamInfo.teamName;
+  if(!finalTeamName){alert('チーム名を入力してください。'); if(inputEl) inputEl.focus(); return;}
   const payload={
-    teamName:teamInfo.teamName, base:teamInfo.base, activityTime:teamInfo.activityTime,
+    teamName:finalTeamName, base:teamInfo.base, activityTime:teamInfo.activityTime,
     condition:teamInfo.condition, repName:teamInfo.repName, repTel:teamInfo.repTel, repEmail:teamInfo.repEmail,
     category:'general',
     members:members.map(m=>({...m,category:'general',note:calcAge(m.birthday)}))
@@ -685,7 +706,7 @@ document.getElementById('btnUploadSubmit').addEventListener('click',async functi
   try{
     await api('create',{type:'team',payload});
     document.getElementById('successTitle').textContent='一括登録が完了しました';
-    document.getElementById('successText').textContent=`${teamInfo.teamName}（${members.length}名）を登録しました。`;
+    document.getElementById('successText').textContent=finalTeamName+'（'+members.length+'名）を登録しました。';
     show('pageSuccess');
   }catch(err){alert(err.message);}
   finally{this.disabled=false;this.textContent='この内容で登録する';}
