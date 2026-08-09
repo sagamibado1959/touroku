@@ -5,198 +5,120 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>相模原市バドミントン協会 登録フォーム</title>
 <style>
-:root {
-  --green: #155A45;
-  --green-dark: #0E4235;
-  --orange: #E8792B;
-  --orange-dark: #C6611C;
-  --bg: #EFF4EE;
-  --card: #FFFFFF;
-  --border: #DCE6DC;
-  --text: #152420;
-  --text-soft: #516158;
-  --error: #B23A2E;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  font-family: 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  padding: 24px 14px 80px;
-  line-height: 1.6;
-}
-.wrap { max-width: 660px; margin: 0 auto; }
-
-/* Hero */
-.hero {
-  background: linear-gradient(160deg, var(--green), var(--green-dark));
-  border-radius: 16px;
-  padding: 36px 24px 30px;
-  color: #fff;
-  text-align: center;
-  margin-bottom: 20px;
-}
-.hero h1 { font-size: 22px; font-weight: 900; margin-bottom: 8px; }
-.hero p  { font-size: 13px; opacity: .85; }
-
+:root{--green:#155A45;--green-dark:#0E4235;--orange:#E8792B;--orange-dark:#C6611C;--blue:#2563EB;--blue-dark:#1D4ED8;--bg:#EFF4EE;--card:#FFFFFF;--border:#DCE6DC;--text:#152420;--text-soft:#516158;--error:#B23A2E;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans',Meiryo,sans-serif;background:var(--bg);color:var(--text);padding:24px 14px 80px;line-height:1.6;}
+.wrap{max-width:700px;margin:0 auto;}
+.hero{background:linear-gradient(160deg,var(--green),var(--green-dark));border-radius:16px;padding:36px 24px 30px;color:#fff;text-align:center;margin-bottom:20px;}
+.hero h1{font-size:22px;font-weight:900;margin-bottom:8px;}
+.hero p{font-size:13px;opacity:.85;}
 /* Landing */
-.landing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-@media(max-width:480px){ .landing-grid { grid-template-columns: 1fr; } }
-.landing-btn {
-  background: var(--card); border: 1px solid var(--border); border-radius: 14px;
-  padding: 28px 16px; text-align: center; cursor: pointer;
-  font-family: inherit; width: 100%; transition: border-color .15s, transform .1s;
-}
-.landing-btn:hover { border-color: var(--orange); transform: translateY(-2px); }
-.lb-icon {
-  width: 44px; height: 44px; border-radius: 50%; background: var(--green);
-  color: #fff; font-size: 22px; display: flex; align-items: center;
-  justify-content: center; margin: 0 auto 12px;
-}
-.landing-btn.edit .lb-icon { background: var(--orange); }
-.lb-title { font-size: 15px; font-weight: 700; color: var(--green-dark); margin-bottom: 4px; }
-.lb-desc  { font-size: 12px; color: var(--text-soft); }
-
+.landing-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:480px){.landing-grid{grid-template-columns:1fr;}}
+.landing-btn{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px 16px;text-align:center;cursor:pointer;font-family:inherit;width:100%;transition:border-color .15s,transform .1s;}
+.landing-btn:hover{border-color:var(--orange);transform:translateY(-2px);}
+.lb-icon{width:44px;height:44px;border-radius:50%;background:var(--green);color:#fff;font-size:22px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;}
+.landing-btn.edit .lb-icon{background:var(--orange);}
+.landing-btn.upload-btn .lb-icon{background:var(--blue);}
+.lb-title{font-size:15px;font-weight:700;color:var(--green-dark);margin-bottom:4px;}
+.lb-desc{font-size:12px;color:var(--text-soft);}
 /* Card */
-.card {
-  background: var(--card); border: 1px solid var(--border);
-  border-radius: 14px; padding: 24px; margin-top: 16px;
-}
-.card-title {
-  font-size: 16px; font-weight: 700; color: var(--green-dark);
-  border-left: 4px solid var(--orange); padding-left: 10px;
-  margin-bottom: 18px;
-}
-
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px;margin-top:16px;}
+.card-title{font-size:16px;font-weight:700;color:var(--green-dark);border-left:4px solid var(--orange);padding-left:10px;margin-bottom:18px;}
 /* Tabs */
-.tabs { display: flex; gap: 8px; margin-bottom: 16px; }
-.tab {
-  flex: 1; padding: 11px; border: 1px solid var(--border); border-radius: 9px;
-  background: var(--bg); cursor: pointer; font-family: inherit; font-size: 14px;
-  font-weight: 700; color: var(--text-soft); transition: all .15s;
-}
-.tab.active { background: var(--orange); border-color: var(--orange); color: #fff; }
-
-/* Edit badge */
-.edit-badge {
-  background: #FDF3EA; border: 1px dashed var(--orange);
-  border-radius: 8px; padding: 9px 14px; font-size: 12.5px;
-  color: var(--orange-dark); font-weight: 700; margin-bottom: 16px;
-  display: none;
-}
-
-/* Section */
-.sec { margin-bottom: 22px; }
-.sec-title {
-  font-size: 13.5px; font-weight: 700; color: var(--green-dark);
-  margin-bottom: 12px; padding-bottom: 6px; border-bottom: 1px solid var(--border);
-}
-.field { margin-bottom: 13px; }
-.field label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 5px; }
-.req { color: var(--orange-dark); font-weight: 800; margin-left: 2px; }
-.field input, .field select, .field textarea {
-  width: 100%; padding: 10px 12px; border: 1px solid var(--border);
-  border-radius: 8px; font-family: inherit; font-size: 14px;
-  background: var(--bg); color: var(--text); outline: none;
-  transition: border-color .15s, box-shadow .15s;
-}
-.field input:focus, .field select:focus, .field textarea:focus {
-  border-color: var(--orange); box-shadow: 0 0 0 3px rgba(232,121,43,.15);
-}
-.field textarea { min-height: 72px; resize: vertical; }
-.field.err input, .field.err select, .field.err textarea { border-color: var(--error); }
-.err-msg { font-size: 11.5px; color: var(--error); margin-top: 4px; display: none; }
-.field.err .err-msg { display: block; }
-.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-@media(max-width:480px){ .row2 { grid-template-columns: 1fr; } }
-.age-hint { font-size: 11.5px; color: var(--text-soft); margin-top: 4px; }
-
-/* Radio / Checkbox pills */
-.pills { display: flex; flex-wrap: wrap; gap: 8px; }
-.pill { position: relative; }
-.pill input { position: absolute; opacity: 0; width: 0; height: 0; }
-.pill span {
-  display: inline-block; padding: 8px 14px; border: 1px solid var(--border);
-  border-radius: 99px; font-size: 13px; color: var(--text-soft);
-  background: var(--bg); cursor: pointer; transition: all .15s;
-}
-.pill input:checked + span { background: var(--green); border-color: var(--green); color: #fff; }
-
-/* Free agent checkbox */
-.free-check {
-  display: flex; align-items: center; gap: 8px;
-  font-size: 13.5px; margin-top: 6px; cursor: pointer;
-}
-.free-check input { width: 16px; height: 16px; accent-color: var(--green); cursor: pointer; }
-
+.tabs{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap;}
+.tab{flex:1;min-width:80px;padding:10px 8px;border:1px solid var(--border);border-radius:9px;background:var(--bg);cursor:pointer;font-family:inherit;font-size:13px;font-weight:700;color:var(--text-soft);transition:all .15s;}
+.tab.active{background:var(--orange);border-color:var(--orange);color:#fff;}
+.edit-badge{background:#FDF3EA;border:1px dashed var(--orange);border-radius:8px;padding:9px 14px;font-size:12.5px;color:var(--orange-dark);font-weight:700;margin-bottom:16px;display:none;}
+/* Fields */
+.sec{margin-bottom:22px;}
+.sec-title{font-size:13.5px;font-weight:700;color:var(--green-dark);margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid var(--border);}
+.field{margin-bottom:13px;}
+.field label{display:block;font-size:13px;font-weight:600;margin-bottom:5px;}
+.req{color:var(--orange-dark);font-weight:800;margin-left:2px;}
+.field input,.field select,.field textarea{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-family:inherit;font-size:14px;background:var(--bg);color:var(--text);outline:none;transition:border-color .15s,box-shadow .15s;}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(232,121,43,.15);}
+.field textarea{min-height:68px;resize:vertical;}
+.field.err input,.field.err select,.field.err textarea{border-color:var(--error);}
+.err-msg{font-size:11.5px;color:var(--error);margin-top:4px;display:none;}
+.field.err .err-msg{display:block;}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+@media(max-width:520px){.row2,.row3{grid-template-columns:1fr;}}
+.age-hint{font-size:11.5px;color:var(--text-soft);margin-top:4px;}
+/* Pills */
+.pills{display:flex;flex-wrap:wrap;gap:8px;}
+.pill{position:relative;}
+.pill input{position:absolute;opacity:0;width:0;height:0;}
+.pill span{display:inline-block;padding:8px 14px;border:1px solid var(--border);border-radius:99px;font-size:13px;color:var(--text-soft);background:var(--bg);cursor:pointer;transition:all .15s;}
+.pill input:checked + span{background:var(--green);border-color:var(--green);color:#fff;}
+/* Free check */
+.free-check{display:flex;align-items:center;gap:8px;font-size:13.5px;margin-top:6px;cursor:pointer;}
+.free-check input{width:16px;height:16px;accent-color:var(--green);cursor:pointer;}
 /* Member rows */
-.member-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
-.member-type-btn {
-  padding: 8px 20px; border: 1px solid var(--border); border-radius: 99px;
-  background: var(--bg); color: var(--text-soft); font-family: inherit;
-  font-size: 13px; font-weight: 700; cursor: pointer; transition: all .15s;
-}
-.member-type-btn.active { background: var(--green); border-color: var(--green); color: #fff; }
-.member-row-g { display: grid; grid-template-columns: 22px 1fr 1fr auto auto 90px 28px; gap: 6px; align-items: center; background: var(--bg); border: 1px solid var(--border); border-radius: 9px; padding: 9px; margin-bottom: 8px; }
-.member-row-e { display: grid; grid-template-columns: 22px 1fr 1fr auto auto 90px 28px; gap: 6px; align-items: center; background: #F0F7FF; border: 1px solid #C5D9F0; border-radius: 9px; padding: 9px; margin-bottom: 8px; }
-.member-row-g.err, .member-row-e.err { border-color: var(--error); }
-@media(max-width:560px){ .member-row-g, .member-row-e { grid-template-columns: 1fr 1fr; } }
-.m-auto { font-size: 11px; font-weight: 700; color: var(--green); white-space: nowrap; }
-.member-row-e .m-auto { color: #2563EB; }
-
+.member-list{display:flex;flex-direction:column;gap:6px;margin-bottom:10px;}
+.mrow{background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:10px;display:grid;gap:6px;}
+.mrow.general{grid-template-columns:22px 1.2fr 1fr 60px 1fr 1fr 1fr 1fr 28px;}
+.mrow.elementary{grid-template-columns:22px 1.2fr 1fr 60px 1fr 1fr 1.2fr 1fr 28px;background:#F0F7FF;border-color:#C5D9F0;}
+.mrow.err{border-color:var(--error);}
+@media(max-width:600px){.mrow{grid-template-columns:1fr 1fr;}.m-num,.m-del{display:none;}}
+.mrow input,.mrow select{padding:7px 8px;font-size:12px;background:#fff;border:1px solid var(--border);border-radius:7px;font-family:inherit;width:100%;}
+.mrow input:focus,.mrow select:focus{border-color:var(--orange);outline:none;}
+.m-num{font-size:12px;font-weight:700;color:var(--green);text-align:center;align-self:center;}
+.mrow.elementary .m-num{color:var(--blue);}
+.m-auto{font-size:11px;font-weight:700;color:var(--green);align-self:center;white-space:nowrap;}
+.mrow.elementary .m-auto{color:var(--blue);}
+.m-del{background:none;border:none;color:var(--text-soft);font-size:15px;cursor:pointer;border-radius:5px;padding:2px 5px;align-self:center;}
+.m-del:hover{background:#f2ddd2;color:var(--error);}
+.m-del:disabled{opacity:.25;cursor:not-allowed;}
+.add-member-btn{width:100%;padding:10px;border:1.5px dashed var(--orange);background:#FDF3EA;color:var(--orange-dark);font-weight:700;font-size:13px;border-radius:9px;cursor:pointer;font-family:inherit;}
+.add-member-btn:hover{background:#fbe7d4;}
+.member-count{font-size:11.5px;color:var(--text-soft);margin-top:6px;}
+.member-count.err{color:var(--error);font-weight:700;}
 /* Agree */
-.agree {
-  display: flex; gap: 9px; align-items: flex-start;
-  background: var(--bg); border: 1px dashed var(--green);
-  border-radius: 9px; padding: 13px; font-size: 12px;
-  color: var(--text-soft); margin-bottom: 18px;
-}
-.agree input { width: 16px; height: 16px; flex: none; margin-top: 2px; accent-color: var(--green); }
-.agree.err { border-color: var(--error); }
-
+.agree{display:flex;gap:9px;align-items:flex-start;background:var(--bg);border:1px dashed var(--green);border-radius:9px;padding:13px;font-size:12px;color:var(--text-soft);margin-bottom:18px;}
+.agree input{width:16px;height:16px;flex:none;margin-top:2px;accent-color:var(--green);}
+.agree.err{border-color:var(--error);}
 /* Buttons */
-.btn-submit {
-  width: 100%; padding: 14px; background: var(--orange); color: #fff;
-  border: none; border-radius: 10px; font-size: 15px; font-weight: 700;
-  font-family: inherit; cursor: pointer; transition: background .15s;
-}
-.btn-submit:hover { background: var(--orange-dark); }
-.btn-submit:disabled { opacity: .6; cursor: not-allowed; }
-.btn-back {
-  background: none; border: none; color: var(--text-soft); font-size: 12.5px;
-  font-weight: 600; cursor: pointer; padding: 6px 0; margin-bottom: 4px;
-  display: inline-flex; align-items: center; gap: 4px; font-family: inherit;
-}
-.btn-back:hover { color: var(--green-dark); }
-.btn-outline {
-  padding: 11px 22px; border: 1.5px solid var(--green); background: none;
-  color: var(--green-dark); font-family: inherit; font-size: 13.5px;
-  font-weight: 700; border-radius: 9px; cursor: pointer; transition: background .15s;
-  display: block; width: 100%; max-width: 280px; margin: 10px auto 0;
-}
-.btn-outline:hover { background: var(--bg); }
-
+.btn-submit{width:100%;padding:14px;background:var(--orange);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;transition:background .15s;}
+.btn-submit:hover{background:var(--orange-dark);}
+.btn-submit:disabled{opacity:.6;cursor:not-allowed;}
+.btn-back{background:none;border:none;color:var(--text-soft);font-size:12.5px;font-weight:600;cursor:pointer;padding:6px 0;margin-bottom:4px;display:inline-flex;align-items:center;gap:4px;font-family:inherit;}
+.btn-back:hover{color:var(--green-dark);}
+.btn-outline{padding:11px 22px;border:1.5px solid var(--green);background:none;color:var(--green-dark);font-family:inherit;font-size:13.5px;font-weight:700;border-radius:9px;cursor:pointer;transition:background .15s;display:block;width:100%;max-width:280px;margin:10px auto 0;}
+.btn-outline:hover{background:var(--bg);}
+/* Upload area */
+.upload-area{border:2px dashed var(--blue);border-radius:12px;padding:32px;text-align:center;background:#F0F7FF;cursor:pointer;transition:background .15s;}
+.upload-area:hover{background:#E0EEFF;}
+.upload-area input{display:none;}
+.upload-icon{font-size:36px;margin-bottom:10px;}
+.upload-area p{font-size:13px;color:var(--text-soft);}
+.upload-area strong{color:var(--blue-dark);}
+.upload-preview{margin-top:16px;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:16px;display:none;}
+.preview-title{font-weight:700;font-size:14px;color:var(--green-dark);margin-bottom:10px;}
+.preview-row{font-size:13px;padding:4px 0;border-bottom:1px solid var(--border);}
+.preview-row:last-child{border-bottom:none;}
+.preview-label{color:var(--text-soft);font-size:12px;}
+.preview-member-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:8px;}
+.preview-member-table th{background:var(--green);color:#fff;padding:6px 8px;text-align:left;}
+.preview-member-table td{padding:5px 8px;border-bottom:1px solid var(--border);}
+.preview-member-table tr:nth-child(even) td{background:#F5F9F5;}
+.upload-msg{margin-top:10px;font-size:13px;padding:10px;border-radius:8px;display:none;}
+.upload-msg.ok{background:#E8F5E9;color:#155A45;border:1px solid #A5D6A7;}
+.upload-msg.ng{background:#FFEBEE;color:var(--error);border:1px solid #EF9A9A;}
 /* Success */
-.success-wrap { text-align: center; padding: 40px 20px; }
-.success-ring {
-  width: 52px; height: 52px; border-radius: 50%; background: var(--green);
-  color: #fff; font-size: 24px; display: flex; align-items: center;
-  justify-content: center; margin: 0 auto 16px;
-}
-.success-wrap h2 { font-size: 18px; color: var(--green-dark); margin-bottom: 8px; }
-.success-wrap p  { font-size: 13px; color: var(--text-soft); }
-
-/* Utilities */
-.hidden { display: none !important; }
+.success-wrap{text-align:center;padding:40px 20px;}
+.success-ring{width:52px;height:52px;border-radius:50%;background:var(--green);color:#fff;font-size:24px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;}
+.success-wrap h2{font-size:18px;color:var(--green-dark);margin-bottom:8px;}
+.success-wrap p{font-size:13px;color:var(--text-soft);}
+.hidden{display:none!important;}
 </style>
 </head>
 <body>
 <div class="wrap">
-
-  <!-- Hero -->
   <div class="hero">
     <h1>相模原市バドミントン協会<br>登録フォーム</h1>
-    <p>個人登録・団体登録(5名以上)に対応しています</p>
+    <p>個人登録・一般団体・小学生団体の登録に対応しています</p>
   </div>
 
   <!-- ===== ランディング ===== -->
@@ -205,12 +127,17 @@ body {
       <button class="landing-btn" id="btnToRegister">
         <div class="lb-icon">＋</div>
         <div class="lb-title">新規登録</div>
-        <div class="lb-desc">個人・団体(5名以上)</div>
+        <div class="lb-desc">個人・一般団体・小学生団体</div>
       </button>
       <button class="landing-btn edit" id="btnToEdit">
         <div class="lb-icon">✎</div>
         <div class="lb-title">登録内容の修正</div>
         <div class="lb-desc">登録済みの内容を修正</div>
+      </button>
+      <button class="landing-btn upload-btn" id="btnToUpload">
+        <div class="lb-icon">📂</div>
+        <div class="lb-title">名簿Excelで一括登録</div>
+        <div class="lb-desc">協会名簿フォーマットのExcelを読み込む</div>
       </button>
     </div>
   </div>
@@ -219,30 +146,22 @@ body {
   <div id="pageRegister" class="hidden">
     <button class="btn-back" id="backFromRegister">← 最初の画面に戻る</button>
     <div class="edit-badge" id="editBadge">✎ 編集モード：登録内容を修正しています</div>
-
-    <!-- タブ -->
     <div class="tabs" id="tabBar">
       <button class="tab active" data-tab="individual">個人登録</button>
       <button class="tab" data-tab="team-general">一般団体</button>
       <button class="tab" data-tab="team-elementary">小学生団体</button>
     </div>
 
-    <!-- ---- 個人登録フォーム ---- -->
+    <!-- 個人登録 -->
     <form id="formIndividual" novalidate>
       <div class="card">
         <div class="card-title">基本情報</div>
         <div class="sec">
-          <div class="field" id="f-i-name">
-            <label>氏名<span class="req">*</span></label>
-            <input type="text" id="i-name" placeholder="相模原 太郎">
-            <div class="err-msg">氏名をご入力ください</div>
-          </div>
-          <div class="field" id="f-i-kana">
-            <label>よみがな<span class="req">*</span></label>
-            <input type="text" id="i-kana" placeholder="さがみはら たろう">
-            <div class="err-msg">よみがなをご入力ください</div>
-          </div>
           <div class="row2">
+            <div class="field" id="f-i-name"><label>氏名<span class="req">*</span></label><input type="text" id="i-name" placeholder="相模原 太郎"><div class="err-msg">氏名をご入力ください</div></div>
+            <div class="field" id="f-i-kana"><label>よみがな<span class="req">*</span></label><input type="text" id="i-kana" placeholder="さがみはら たろう"><div class="err-msg">よみがなをご入力ください</div></div>
+          </div>
+          <div class="row3">
             <div class="field" id="f-i-birthday">
               <label>生年月日<span class="req">*</span></label>
               <input type="date" id="i-birthday">
@@ -252,206 +171,168 @@ body {
             <div class="field" id="f-i-gender">
               <label>性別<span class="req">*</span></label>
               <div class="pills">
-                <label class="pill"><input type="radio" name="i-gender" value="male"><span>男性</span></label>
-                <label class="pill"><input type="radio" name="i-gender" value="female"><span>女性</span></label>
-                <label class="pill"><input type="radio" name="i-gender" value="other"><span>その他</span></label>
+                <label class="pill"><input type="radio" name="i-gender" value="男"><span>男性</span></label>
+                <label class="pill"><input type="radio" name="i-gender" value="女"><span>女性</span></label>
               </div>
               <div class="err-msg">性別を選択してください</div>
             </div>
+            <div class="field" id="f-i-qual">
+              <label>資格<span class="req">*</span></label>
+              <select id="i-qual">
+                <option value="">選択</option>
+                <option value="在住">在住</option>
+                <option value="在勤">在勤</option>
+                <option value="在学">在学</option>
+                <option value="住・勤">住・勤</option>
+                <option value="市外">市外</option>
+              </select>
+              <div class="err-msg">資格を選択してください</div>
+            </div>
+          </div>
+          <div class="field" id="f-i-school">
+            <label>学校名（在学者のみ）</label>
+            <input type="text" id="i-school" placeholder="〇〇小学校">
           </div>
         </div>
-
         <div class="card-title">登録チーム</div>
         <div class="sec">
-          <div class="field" id="f-i-team">
-            <label>登録チーム名<span class="req">*</span></label>
-            <input type="text" id="i-team" placeholder="〇〇バドミントンクラブ">
-            <div class="err-msg">チーム名を入力するか、フリーにチェックしてください</div>
-          </div>
-          <label class="free-check">
-            <input type="checkbox" id="i-free">
-            フリー(無所属)で登録する
-          </label>
+          <div class="field" id="f-i-team"><label>登録チーム名<span class="req">*</span></label><input type="text" id="i-team" placeholder="〇〇バドミントンクラブ"><div class="err-msg">チーム名を入力するか、フリーにチェックしてください</div></div>
+          <label class="free-check"><input type="checkbox" id="i-free"> フリー(無所属)で登録する</label>
         </div>
-
         <div class="card-title">連絡先</div>
         <div class="sec">
-          <div class="field" id="f-i-address">
-            <label>住所<span class="req">*</span></label>
-            <input type="text" id="i-address" placeholder="相模原市中央区〇〇 1-2-3">
-            <div class="err-msg">住所をご入力ください</div>
-          </div>
+          <div class="field" id="f-i-address"><label>住所<span class="req">*</span></label><input type="text" id="i-address" placeholder="相模原市中央区〇〇 1-2-3"><div class="err-msg">住所をご入力ください</div></div>
           <div class="row2">
-            <div class="field" id="f-i-tel">
-              <label>電話番号<span class="req">*</span></label>
-              <input type="tel" id="i-tel" placeholder="090-1234-5678">
-              <div class="err-msg">電話番号をご入力ください</div>
-            </div>
-            <div class="field" id="f-i-email">
-              <label>メールアドレス<span class="req">*</span></label>
-              <input type="email" id="i-email" placeholder="taro@example.com">
-              <div class="err-msg">メールアドレスをご入力ください</div>
-            </div>
+            <div class="field" id="f-i-tel"><label>電話番号<span class="req">*</span></label><input type="tel" id="i-tel" placeholder="090-1234-5678"><div class="err-msg">電話番号をご入力ください</div></div>
+            <div class="field" id="f-i-email"><label>メールアドレス<span class="req">*</span></label><input type="email" id="i-email" placeholder="taro@example.com"><div class="err-msg">メールアドレスをご入力ください</div></div>
           </div>
         </div>
       </div>
-
-      <div class="agree" id="agree-i">
-        <input type="checkbox" id="i-agree">
-        <label for="i-agree">ご記入いただいた個人情報は、協会の会員管理・連絡目的にのみ使用し、第三者へ提供することはありません。上記内容に同意の上、送信します。</label>
-      </div>
+      <div class="agree" id="agree-i"><input type="checkbox" id="agree-cb-i"><label for="agree-cb-i">ご記入いただいた個人情報は、協会の会員管理・連絡目的にのみ使用し、第三者へ提供することはありません。上記内容に同意の上、送信します。</label></div>
       <button type="submit" class="btn-submit" id="btnSubmitIndividual">個人登録を送信する</button>
     </form>
 
-    <!-- ---- 一般団体フォーム ---- -->
+    <!-- 一般団体フォーム -->
     <form id="form-team-general" class="hidden" novalidate>
       <div class="card">
-        <div class="card-title" style="border-color:#155A45">団体情報</div>
+        <div class="card-title">団体情報</div>
         <div class="sec">
-          <div class="field" id="f-tg-name">
-            <label>団体名(チーム名)<span class="req">*</span></label>
-            <input type="text" id="tg-name" placeholder="〇〇バドミントンクラブ">
-            <div class="err-msg">団体名をご入力ください</div>
-          </div>
-          <div class="field" id="f-tg-base">
-            <label>活動拠点<span class="req">*</span></label>
-            <input type="text" id="tg-base" placeholder="例：相模原市総合体育館">
-            <div class="err-msg">活動拠点をご入力ください</div>
-          </div>
-          <div class="field" id="f-tg-time">
-            <label>主な活動日・時間帯<span class="req">*</span></label>
-            <input type="text" id="tg-time" placeholder="例：毎週土曜 19:00〜21:00">
-            <div class="err-msg">活動日・時間帯をご入力ください</div>
-          </div>
-        </div>
-
-        <div class="card-title" style="border-color:#155A45">代表者情報</div>
-        <div class="sec">
-          <div class="field" id="f-tg-rep">
-            <label>代表者氏名<span class="req">*</span></label>
-            <input type="text" id="tg-rep" placeholder="相模原 太郎">
-            <div class="err-msg">代表者氏名をご入力ください</div>
+          <div class="row2">
+            <div class="field" id="f-tg-name"><label>団体名<span class="req">*</span></label><input type="text" id="tg-name" placeholder="〇〇バドミントンクラブ"><div class="err-msg">団体名をご入力ください</div></div>
+            <div class="field" id="f-tg-base"><label>練習場所<span class="req">*</span></label><input type="text" id="tg-base" placeholder="例：相模原市総合体育館"><div class="err-msg">練習場所をご入力ください</div></div>
           </div>
           <div class="row2">
-            <div class="field" id="f-tg-tel">
-              <label>電話番号<span class="req">*</span></label>
-              <input type="tel" id="tg-tel" placeholder="090-1234-5678">
-              <div class="err-msg">電話番号をご入力ください</div>
-            </div>
-            <div class="field" id="f-tg-email">
-              <label>メールアドレス<span class="req">*</span></label>
-              <input type="email" id="tg-email" placeholder="taro@example.com">
-              <div class="err-msg">メールアドレスをご入力ください</div>
-            </div>
+            <div class="field" id="f-tg-time"><label>練習日時<span class="req">*</span></label><input type="text" id="tg-time" placeholder="例：毎週土曜 19:00〜21:00"><div class="err-msg">練習日時をご入力ください</div></div>
+            <div class="field" id="f-tg-cond"><label>入会条件</label><input type="text" id="tg-cond" placeholder="例：社員または関連会社員"></div>
           </div>
         </div>
-
-        <div class="card-title" style="border-color:#155A45">メンバー登録(5名以上)</div>
+        <div class="card-title">代表者情報</div>
         <div class="sec">
-          <div style="font-size:12px;color:var(--text-soft);margin-bottom:8px;">生年月日を入力すると年齢が自動表示されます</div>
+          <div class="row3">
+            <div class="field" id="f-tg-rep"><label>代表者氏名<span class="req">*</span></label><input type="text" id="tg-rep" placeholder="相模原 太郎"><div class="err-msg">代表者氏名をご入力ください</div></div>
+            <div class="field" id="f-tg-tel"><label>電話番号<span class="req">*</span></label><input type="tel" id="tg-tel" placeholder="090-1234-5678"><div class="err-msg">電話番号をご入力ください</div></div>
+            <div class="field" id="f-tg-email"><label>メールアドレス<span class="req">*</span></label><input type="email" id="tg-email" placeholder="taro@example.com"><div class="err-msg">メールアドレスをご入力ください</div></div>
+          </div>
+        </div>
+        <div class="card-title">メンバー登録（5名以上）</div>
+        <div class="sec">
+          <div style="font-size:11.5px;color:var(--text-soft);margin-bottom:8px;">氏名・性別・生年月日・住所・電話番号・資格は必須です。生年月日を入力すると年齢が自動表示されます。</div>
+          <div style="display:grid;grid-template-columns:22px 1.2fr 1fr 60px 1fr 1fr 1fr 1fr 28px;gap:6px;padding:0 10px;margin-bottom:4px;">
+            <div></div><div style="font-size:11px;color:var(--text-soft);font-weight:700;">氏名</div><div style="font-size:11px;color:var(--text-soft);font-weight:700;">よみがな</div><div style="font-size:11px;color:var(--text-soft);font-weight:700;">性別</div><div style="font-size:11px;color:var(--text-soft);font-weight:700;">生年月日</div><div style="font-size:11px;color:var(--text-soft);font-weight:700;">住所</div><div style="font-size:11px;color:var(--text-soft);font-weight:700;">電話番号</div><div style="font-size:11px;color:var(--text-soft);font-weight:700;">資格/年齢</div><div></div>
+          </div>
           <div class="member-list" id="memberList-tg"></div>
           <button type="button" class="add-member-btn" id="btnAdd-tg">＋ メンバーを追加</button>
           <div class="member-count" id="memberCount-tg">登録人数：0名</div>
         </div>
       </div>
-
-      <div class="agree" id="agree-tg">
-        <input type="checkbox" id="agree-cb-tg">
-        <label for="agree-cb-tg">ご記入いただいた個人情報は、協会の会員管理・連絡目的にのみ使用し、第三者へ提供することはありません。全メンバーの同意を確認の上、送信します。</label>
-      </div>
-      <button type="submit" class="btn-submit" id="btnSubmitGeneral" style="background:#155A45">一般団体登録を送信する</button>
+      <div class="agree" id="agree-tg"><input type="checkbox" id="agree-cb-tg"><label for="agree-cb-tg">ご記入いただいた個人情報は、協会の会員管理・連絡目的にのみ使用し、第三者へ提供することはありません。全メンバーの同意を確認の上、送信します。</label></div>
+      <button type="submit" class="btn-submit" id="btnSubmitGeneral">一般団体登録を送信する</button>
     </form>
 
-    <!-- ---- 小学生団体フォーム ---- -->
+    <!-- 小学生団体フォーム -->
     <form id="form-team-elementary" class="hidden" novalidate>
       <div class="card">
-        <div class="card-title" style="border-color:#2563EB">団体情報</div>
+        <div class="card-title" style="border-color:var(--blue)">団体情報</div>
         <div class="sec">
-          <div class="field" id="f-te-name">
-            <label>団体名(チーム名)<span class="req">*</span></label>
-            <input type="text" id="te-name" placeholder="〇〇バドミントンクラブ">
-            <div class="err-msg">団体名をご入力ください</div>
-          </div>
-          <div class="field" id="f-te-base">
-            <label>活動拠点<span class="req">*</span></label>
-            <input type="text" id="te-base" placeholder="例：相模原市総合体育館">
-            <div class="err-msg">活動拠点をご入力ください</div>
-          </div>
-          <div class="field" id="f-te-time">
-            <label>主な活動日・時間帯<span class="req">*</span></label>
-            <input type="text" id="te-time" placeholder="例：毎週土曜 19:00〜21:00">
-            <div class="err-msg">活動日・時間帯をご入力ください</div>
-          </div>
-        </div>
-
-        <div class="card-title" style="border-color:#2563EB">代表者情報</div>
-        <div class="sec">
-          <div class="field" id="f-te-rep">
-            <label>代表者氏名<span class="req">*</span></label>
-            <input type="text" id="te-rep" placeholder="相模原 太郎">
-            <div class="err-msg">代表者氏名をご入力ください</div>
+          <div class="row2">
+            <div class="field" id="f-te-name"><label>団体名<span class="req">*</span></label><input type="text" id="te-name" placeholder="〇〇バドミントンクラブ"><div class="err-msg">団体名をご入力ください</div></div>
+            <div class="field" id="f-te-base"><label>練習場所<span class="req">*</span></label><input type="text" id="te-base" placeholder="例：相模原市総合体育館"><div class="err-msg">練習場所をご入力ください</div></div>
           </div>
           <div class="row2">
-            <div class="field" id="f-te-tel">
-              <label>電話番号<span class="req">*</span></label>
-              <input type="tel" id="te-tel" placeholder="090-1234-5678">
-              <div class="err-msg">電話番号をご入力ください</div>
-            </div>
-            <div class="field" id="f-te-email">
-              <label>メールアドレス<span class="req">*</span></label>
-              <input type="email" id="te-email" placeholder="taro@example.com">
-              <div class="err-msg">メールアドレスをご入力ください</div>
-            </div>
+            <div class="field" id="f-te-time"><label>練習日時<span class="req">*</span></label><input type="text" id="te-time" placeholder="例：毎週土曜 10:00〜12:00"><div class="err-msg">練習日時をご入力ください</div></div>
+            <div class="field" id="f-te-cond"><label>入会条件</label><input type="text" id="te-cond" placeholder="例：相模原市在住の小学生"></div>
           </div>
         </div>
-
-        <div class="card-title" style="border-color:#2563EB">メンバー登録(5名以上)</div>
+        <div class="card-title" style="border-color:var(--blue)">代表者情報</div>
         <div class="sec">
-          <div style="font-size:12px;color:var(--text-soft);margin-bottom:8px;">生年月日を入力すると学年が自動表示されます</div>
+          <div class="row3">
+            <div class="field" id="f-te-rep"><label>代表者氏名<span class="req">*</span></label><input type="text" id="te-rep" placeholder="相模原 太郎"><div class="err-msg">代表者氏名をご入力ください</div></div>
+            <div class="field" id="f-te-tel"><label>電話番号<span class="req">*</span></label><input type="tel" id="te-tel" placeholder="090-1234-5678"><div class="err-msg">電話番号をご入力ください</div></div>
+            <div class="field" id="f-te-email"><label>メールアドレス<span class="req">*</span></label><input type="email" id="te-email" placeholder="taro@example.com"><div class="err-msg">メールアドレスをご入力ください</div></div>
+          </div>
+        </div>
+        <div class="card-title" style="border-color:var(--blue)">メンバー登録（5名以上）</div>
+        <div class="sec">
+          <div style="font-size:11.5px;color:var(--text-soft);margin-bottom:8px;">生年月日を入力すると学年が自動表示されます。</div>
+          <div style="display:grid;grid-template-columns:22px 1.2fr 1fr 60px 1fr 1fr 1.2fr 1fr 28px;gap:6px;padding:0 10px;margin-bottom:4px;">
+            <div></div><div style="font-size:11px;color:var(--text-soft);font-weight:700;">氏名</div><div style="font-size:11px;color:var(--text-soft);font-weight:700;">よみがな</div><div style="font-size:11px;color:var(--text-soft);font-weight:700;">性別</div><div style="font-size:11px;color:var(--text-soft);font-weight:700;">生年月日</div><div style="font-size:11px;color:var(--text-soft);font-weight:700;">住所</div><div style="font-size:11px;color:var(--text-soft);font-weight:700;">電話番号</div><div style="font-size:11px;color:var(--text-soft);font-weight:700;">資格/学年</div><div></div>
+          </div>
           <div class="member-list" id="memberList-te"></div>
           <button type="button" class="add-member-btn" id="btnAdd-te">＋ メンバーを追加</button>
           <div class="member-count" id="memberCount-te">登録人数：0名</div>
         </div>
       </div>
-
-      <div class="agree" id="agree-te">
-        <input type="checkbox" id="agree-cb-te">
-        <label for="agree-cb-te">ご記入いただいた個人情報は、協会の会員管理・連絡目的にのみ使用し、第三者へ提供することはありません。全メンバーの同意を確認の上、送信します。</label>
-      </div>
-      <button type="submit" class="btn-submit" id="btnSubmitElementary" style="background:#2563EB">小学生団体登録を送信する</button>
+      <div class="agree" id="agree-te"><input type="checkbox" id="agree-cb-te"><label for="agree-cb-te">ご記入いただいた個人情報は、協会の会員管理・連絡目的にのみ使用し、第三者へ提供することはありません。全メンバーの同意を確認の上、送信します。</label></div>
+      <button type="submit" class="btn-submit" id="btnSubmitElementary" style="background:var(--blue)">小学生団体登録を送信する</button>
     </form>
   </div>
 
-  <!-- ===== 修正用検索フォーム ===== -->
+  <!-- ===== Excelアップロード ===== -->
+  <div id="pageUpload" class="hidden">
+    <button class="btn-back" id="backFromUpload">← 最初の画面に戻る</button>
+    <div class="card">
+      <div class="card-title">名簿Excelで一括登録</div>
+      <p style="font-size:13px;color:var(--text-soft);margin-bottom:16px;">協会の登録名簿フォーマット（R7kyoukaitourokumeibo_〇〇.xlsx）をアップロードしてください。団体情報・メンバー全員を自動で読み込みます。</p>
+      <label class="upload-area" id="uploadArea">
+        <input type="file" id="xlsxFile" accept=".xlsx,.xls">
+        <div class="upload-icon">📂</div>
+        <p><strong>クリックしてファイルを選択</strong><br>または、ここにドラッグ＆ドロップ</p>
+        <p style="margin-top:8px;font-size:12px;">対応形式：.xlsx / .xls</p>
+      </label>
+      <div class="upload-msg" id="uploadMsg"></div>
+      <div class="upload-preview" id="uploadPreview">
+        <div class="preview-title" id="previewTitle"></div>
+        <div id="previewTeam"></div>
+        <div style="margin-top:12px;font-size:13px;font-weight:700;color:var(--green-dark);">メンバー一覧</div>
+        <div id="previewMembers"></div>
+        <button class="btn-submit" id="btnUploadSubmit" style="margin-top:16px;">この内容で登録する</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 修正用検索 ===== -->
   <div id="pageSearch" class="hidden">
     <button class="btn-back" id="backFromSearch">← 最初の画面に戻る</button>
     <div class="card">
       <div class="card-title">登録内容の検索</div>
-      <p style="font-size:12.5px;color:var(--text-soft);margin-bottom:16px;">登録時のお名前(団体名)と電話番号で検索します。</p>
+      <p style="font-size:12.5px;color:var(--text-soft);margin-bottom:16px;">登録時のお名前（団体名）と電話番号で検索します。</p>
       <div class="field" id="f-s-type">
         <label>登録区分<span class="req">*</span></label>
         <div class="pills">
-          <label class="pill"><input type="radio" name="s-type" value="individual"><span>個人登録</span></label>
-          <label class="pill"><input type="radio" name="s-type" value="team"><span>団体登録</span></label>
+          <label class="pill"><input type="radio" name="s-type" value="individual"><span>個人</span></label>
+          <label class="pill"><input type="radio" name="s-type" value="team-general"><span>一般団体</span></label>
+          <label class="pill"><input type="radio" name="s-type" value="team-elementary"><span>小学生団体</span></label>
         </div>
         <div class="err-msg">登録区分を選択してください</div>
       </div>
-      <div class="field" id="f-s-name">
-        <label>お名前 / 団体名<span class="req">*</span></label>
-        <input type="text" id="s-name" placeholder="相模原 太郎 / 〇〇バドミントンクラブ">
-        <div class="err-msg">お名前または団体名をご入力ください</div>
-      </div>
-      <div class="field" id="f-s-tel">
-        <label>電話番号<span class="req">*</span></label>
-        <input type="tel" id="s-tel" placeholder="090-1234-5678">
-        <div class="err-msg">電話番号をご入力ください</div>
-      </div>
+      <div class="field" id="f-s-name"><label>お名前 / 団体名<span class="req">*</span></label><input type="text" id="s-name" placeholder="相模原 太郎 / 〇〇バドミントンクラブ"><div class="err-msg">お名前または団体名をご入力ください</div></div>
+      <div class="field" id="f-s-tel"><label>電話番号<span class="req">*</span></label><input type="tel" id="s-tel" placeholder="090-1234-5678"><div class="err-msg">電話番号をご入力ください</div></div>
       <div id="searchMsg" style="font-size:12.5px;color:var(--error);margin-top:10px;display:none;"></div>
       <button type="button" class="btn-submit" id="btnSearch" style="margin-top:16px;">検索する</button>
     </div>
   </div>
 
-  <!-- ===== 完了画面 ===== -->
+  <!-- ===== 完了 ===== -->
   <div id="pageSuccess" class="hidden">
     <div class="card success-wrap">
       <div class="success-ring">✓</div>
@@ -461,76 +342,78 @@ body {
       <button class="btn-outline" id="btnBackToTop" style="margin-top:8px;">最初の画面に戻る</button>
     </div>
   </div>
-
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
 const API_URL   = 'https://script.google.com/macros/s/AKfycbyfqNIsnqaD7nTcxMkor1Y_jrR3fqjDNb6IyUn6ZdvASWUmA_liIfSCi9d7Di9LStsl/exec';
 const API_TOKEN = 'MIMIKIKI01566';
-const MIN_MEMBERS = 5;
+const MIN = 5;
 
 /* ---- ページ切替 ---- */
-function show(id){ ['pageLanding','pageRegister','pageSearch','pageSuccess'].forEach(p=>{ document.getElementById(p).classList.toggle('hidden', p!==id); }); window.scrollTo(0,0); }
+const PAGES=['pageLanding','pageRegister','pageSearch','pageSuccess','pageUpload'];
+function show(id){ PAGES.forEach(p=>document.getElementById(p).classList.toggle('hidden',p!==id)); window.scrollTo(0,0); }
 
 /* ---- 状態 ---- */
-let editMode = false, editType = null, editId = null, editRecord = null;
-let currentTab = 'individual';
-let memberCount = 0;
+let editMode=false,editType=null,editId=null;
+let currentTab='individual';
+let uploadedPayload=null;
 
-/* ---- API呼び出し ---- */
-async function api(action, extra){
-  const res = await fetch(API_URL, {
-    method:'POST',
-    headers:{'Content-Type':'text/plain;charset=utf-8'},
-    body: JSON.stringify(Object.assign({action, token:API_TOKEN}, extra))
-  });
-  const data = await res.json();
-  if(!data.ok) throw new Error(data.error || 'エラーが発生しました');
+/* ---- API ---- */
+async function api(action,extra){
+  const res=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(Object.assign({action,token:API_TOKEN},extra))});
+  const data=await res.json();
+  if(!data.ok) throw new Error(data.error||'エラーが発生しました');
   return data;
 }
 
-/* ---- 年齢計算 ---- */
+/* ---- 計算 ---- */
 function calcAge(d){
   if(!d) return '';
-  const b=new Date(d+'T00:00:00'), now=new Date();
+  const b=new Date(d+'T00:00:00'),now=new Date();
   let a=now.getFullYear()-b.getFullYear();
   if(now.getMonth()<b.getMonth()||(now.getMonth()===b.getMonth()&&now.getDate()<b.getDate())) a--;
-  return a>=0 ? '現在 '+a+'歳（毎年自動更新）' : '';
+  return a>=0?a+'歳':'';
 }
-
-/* ---- バリデーション ---- */
-function vField(id, val){
-  const f=document.getElementById('f-'+id);
-  const ok = val.trim().length>0;
-  f.classList.toggle('err',!ok);
-  return ok;
+function calcGrade(d){
+  if(!d) return '';
+  const b=new Date(d+'T00:00:00'),now=new Date();
+  let sy=now.getFullYear()-b.getFullYear();
+  if(now<new Date(now.getFullYear(),3,2)) sy--;
+  const g=sy-6;
+  if(g>=1&&g<=6) return '小'+g+'年';
+  return sy<=5?'未就学':'卒業';
 }
+function fmtDate(d){
+  if(!d) return '';
+  if(d instanceof Date) return d.toISOString().slice(0,10);
+  if(typeof d==='number'){ const dt=new Date(Math.round((d-25569)*86400*1000)); return dt.toISOString().slice(0,10); }
+  return String(d);
+}
+function escH(s){ return String(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+function vField(id,val){ const f=document.getElementById('f-'+id); const ok=String(val).trim().length>0; f.classList.toggle('err',!ok); return ok; }
 
 /* ---- タブ切替 ---- */
-const ALL_TABS = ['individual','team-general','team-elementary'];
 function switchTab(tab){
-  currentTab = tab;
+  currentTab=tab;
   document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
-  document.getElementById('formIndividual').classList.toggle('hidden', tab!=='individual');
-  document.getElementById('form-team-general').classList.toggle('hidden', tab!=='team-general');
-  document.getElementById('form-team-elementary').classList.toggle('hidden', tab!=='team-elementary');
+  document.getElementById('formIndividual').classList.toggle('hidden',tab!=='individual');
+  document.getElementById('form-team-general').classList.toggle('hidden',tab!=='team-general');
+  document.getElementById('form-team-elementary').classList.toggle('hidden',tab!=='team-elementary');
 }
-document.querySelectorAll('.tab').forEach(btn=>{
-  btn.addEventListener('click',()=>switchTab(btn.dataset.tab));
-});
+document.querySelectorAll('.tab').forEach(btn=>btn.addEventListener('click',()=>switchTab(btn.dataset.tab)));
 
 /* ---- ランディング ---- */
 document.getElementById('btnToRegister').addEventListener('click',()=>{
-  editMode=false; editType=null; editId=null; editRecord=null;
+  editMode=false; editType=null; editId=null;
   document.getElementById('editBadge').style.display='none';
   document.getElementById('tabBar').style.display='flex';
-  switchTab('individual');
+  switchTab('individual'); initAllMembers();
   document.getElementById('btnSubmitIndividual').textContent='個人登録を送信する';
   document.getElementById('btnSubmitGeneral').textContent='一般団体登録を送信する';
   document.getElementById('btnSubmitElementary').textContent='小学生団体登録を送信する';
   show('pageRegister');
 });
-
 document.getElementById('btnToEdit').addEventListener('click',()=>{
   document.getElementById('s-name').value='';
   document.getElementById('s-tel').value='';
@@ -538,187 +421,148 @@ document.getElementById('btnToEdit').addEventListener('click',()=>{
   document.getElementById('searchMsg').style.display='none';
   show('pageSearch');
 });
-
+document.getElementById('btnToUpload').addEventListener('click',()=>{
+  document.getElementById('uploadPreview').style.display='none';
+  document.getElementById('uploadMsg').style.display='none';
+  document.getElementById('xlsxFile').value='';
+  show('pageUpload');
+});
 document.getElementById('backFromRegister').addEventListener('click',()=>show('pageLanding'));
 document.getElementById('backFromSearch').addEventListener('click',()=>show('pageLanding'));
-
-/* ---- メンバー行（一般・小学生） ---- */
-function calcGrade(birthday){
-  if(!birthday) return '';
-  const b = new Date(birthday + 'T00:00:00');
-  if(isNaN(b.getTime())) return '';
-  const now = new Date();
-  let schoolYear = now.getFullYear() - b.getFullYear();
-  const cutoff = new Date(now.getFullYear(), 3, 2);
-  if(now < cutoff) schoolYear--;
-  const grade = schoolYear - 6;
-  if(grade >= 1 && grade <= 6) return '小学'+grade+'年生';
-  if(grade < 1) return '未就学';
-  return '小学生以上';
-}
-function calcAge2(d){
-  if(!d) return '';
-  const b=new Date(d+'T00:00:00'), now=new Date();
-  let a=now.getFullYear()-b.getFullYear();
-  if(now.getMonth()<b.getMonth()||(now.getMonth()===b.getMonth()&&now.getDate()<b.getDate())) a--;
-  return a>=0 ? a+'歳' : '';
-}
-function escHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
-function makeDelBtn(){ const btn=document.createElement('button'); btn.type='button'; btn.className='m-del'; btn.textContent='×'; return btn; }
-function renumRows(list,cls){ list.querySelectorAll('.'+cls).forEach((r,i)=>{ const n=r.querySelector('.m-num'); if(n) n.textContent=i+1; }); }
-
-function addMemberRowTo(prefix, category, data){
-  const isElem = category==='elementary';
-  const cls = isElem ? 'member-row-e' : 'member-row-g';
-  const color = isElem ? '#2563EB' : 'var(--green)';
-  const autoFn = isElem ? calcGrade : calcAge2;
-  const list = document.getElementById('memberList-'+prefix);
-  const row = document.createElement('div'); row.className = cls;
-  row.innerHTML=`
-    <div class="m-num" style="color:${color}">${list.querySelectorAll('.'+cls).length+1}</div>
-    <input type="text" class="m-name" placeholder="氏名" value="${data?escHtml(data.name||''):''}">
-    <input type="text" class="m-kana" placeholder="よみがな" value="${data?escHtml(data.kana||''):''}">
-    <select class="m-gender">
-      <option value="">性別</option>
-      <option value="male" ${data&&data.gender==='male'?'selected':''}>男性</option>
-      <option value="female" ${data&&data.gender==='female'?'selected':''}>女性</option>
-      <option value="other" ${data&&data.gender==='other'?'selected':''}>その他</option>
-    </select>
-    <input type="date" class="m-birthday" value="${data?escHtml(data.birthday||''):''}">
-    <div class="m-auto" style="color:${color}">${data&&data.birthday?autoFn(data.birthday):''}</div>`;
-  const del=makeDelBtn(); row.appendChild(del); list.appendChild(row);
-  row.querySelector('.m-birthday').addEventListener('input',function(){
-    row.querySelector('.m-auto').textContent=autoFn(this.value);
-  });
-  del.addEventListener('click',()=>{ row.remove(); renumRows(list,cls); updateMemberCountFor(prefix); });
-  renumRows(list,cls); updateMemberCountFor(prefix);
-}
-
-function updateMemberCountFor(prefix){
-  const cls = prefix==='te' ? 'member-row-e' : 'member-row-g';
-  const n = document.getElementById('memberList-'+prefix).querySelectorAll('.'+cls).length;
-  const el = document.getElementById('memberCount-'+prefix);
-  if(!el) return;
-  el.textContent='登録人数：'+n+'名'+(n<MIN_MEMBERS?' ※5名以上必須':'');
-  el.classList.toggle('err',n<MIN_MEMBERS);
-}
-
-function initMembersFor(prefix, category, list){
-  const el = document.getElementById('memberList-'+prefix);
-  if(!el) return;
-  el.innerHTML='';
-  const items = list||[];
-  const count = Math.max(items.length, MIN_MEMBERS);
-  for(let i=0;i<count;i++) addMemberRowTo(prefix, category, items[i]||null);
-}
-function initAllMembers(){
-  initMembersFor('tg','general',[]);
-  initMembersFor('te','elementary',[]);
-}
-
-function collectMembersFrom(prefix, category){
-  const cls = prefix==='te' ? 'member-row-e' : 'member-row-g';
-  const autoFn = category==='elementary' ? calcGrade : calcAge2;
-  const members=[];
-  document.getElementById('memberList-'+prefix).querySelectorAll('.'+cls).forEach(r=>{
-    members.push({category,name:r.querySelector('.m-name').value.trim(),kana:r.querySelector('.m-kana').value.trim(),gender:r.querySelector('.m-gender').value,birthday:r.querySelector('.m-birthday').value,note:autoFn(r.querySelector('.m-birthday').value)});
-  });
-  return members;
-}
-
-function validateMembersFor(prefix){
-  const cls = prefix==='te' ? 'member-row-e' : 'member-row-g';
-  let ok=true;
-  const rows=document.getElementById('memberList-'+prefix).querySelectorAll('.'+cls);
-  if(rows.length<MIN_MEMBERS) ok=false;
-  rows.forEach(r=>{
-    const rOk=r.querySelector('.m-name').value.trim()&&r.querySelector('.m-kana').value.trim()&&r.querySelector('.m-gender').value&&r.querySelector('.m-birthday').value;
-    r.classList.toggle('err',!rOk); if(!rOk) ok=false;
-  });
-  updateMemberCountFor(prefix); return ok;
-}
-
-/* ---- 各フォームのメンバー追加ボタン ---- */
-document.getElementById('btnAdd-tg').addEventListener('click',()=>addMemberRowTo('tg','general'));
-document.getElementById('btnAdd-te').addEventListener('click',()=>addMemberRowTo('te','elementary'));
+document.getElementById('backFromUpload').addEventListener('click',()=>show('pageLanding'));
 
 /* ---- フリーチェック ---- */
 document.getElementById('i-free').addEventListener('change',function(){
   const inp=document.getElementById('i-team');
   inp.disabled=this.checked;
   document.getElementById('f-i-team').style.opacity=this.checked?'.5':'1';
-  if(this.checked){ inp.value=''; document.getElementById('f-i-team').classList.remove('err'); }
+  if(this.checked){inp.value='';document.getElementById('f-i-team').classList.remove('err');}
 });
-
-/* ---- 生年月日 ---- */
 document.getElementById('i-birthday').addEventListener('input',function(){
   document.getElementById('i-age').textContent=calcAge(this.value);
 });
 
-/* ---- 個人登録送信 ---- */
-document.getElementById('formIndividual').addEventListener('submit', async function(e){
-  e.preventDefault();
+/* ---- メンバー行 ---- */
+function makeMRow(prefix,category,data){
+  const isE=category==='elementary';
+  const cls='mrow '+(isE?'elementary':'general');
+  const autoFn=isE?calcGrade:calcAge;
+  const list=document.getElementById('memberList-'+prefix);
+  const num=list.querySelectorAll('.mrow').length+1;
+  const row=document.createElement('div'); row.className=cls;
+  row.innerHTML=`
+    <div class="m-num">${num}</div>
+    <input type="text" class="m-name" placeholder="氏名" value="${escH(data?.name||'')}">
+    <input type="text" class="m-kana" placeholder="よみがな" value="${escH(data?.kana||'')}">
+    <select class="m-gender">
+      <option value="">性別</option>
+      <option value="男" ${data?.gender==='男'?'selected':''}>男</option>
+      <option value="女" ${data?.gender==='女'?'selected':''}>女</option>
+    </select>
+    <input type="date" class="m-birthday" value="${escH(data?.birthday||'')}">
+    <input type="text" class="m-address" placeholder="住所" value="${escH(data?.address||'')}">
+    <input type="tel" class="m-tel" placeholder="電話番号" value="${escH(data?.tel||'')}">
+    <div class="m-auto">${data?.birthday?autoFn(data.birthday):''}</div>`;
+  const del=document.createElement('button'); del.type='button'; del.className='m-del'; del.textContent='×';
+  row.appendChild(del); list.appendChild(row);
+  row.querySelector('.m-birthday').addEventListener('input',function(){
+    row.querySelector('.m-auto').textContent=autoFn(this.value);
+  });
+  del.addEventListener('click',()=>{ row.remove(); renumRows(list); updateCount(prefix); });
+  renumRows(list); updateCount(prefix);
+}
+function renumRows(list){ list.querySelectorAll('.mrow').forEach((r,i)=>{ const n=r.querySelector('.m-num'); if(n) n.textContent=i+1; }); }
+function updateCount(prefix){
+  const n=document.getElementById('memberList-'+prefix).querySelectorAll('.mrow').length;
+  const el=document.getElementById('memberCount-'+prefix);
+  el.textContent='登録人数：'+n+'名'+(n<MIN?' ※5名以上必須':'');
+  el.classList.toggle('err',n<MIN);
+}
+function initMembersFor(prefix,category,list){
+  document.getElementById('memberList-'+prefix).innerHTML='';
+  const items=list||[];
+  const count=Math.max(items.length,MIN);
+  for(let i=0;i<count;i++) makeMRow(prefix,category,items[i]||null);
+}
+function initAllMembers(){
+  initMembersFor('tg','general',[]);
+  initMembersFor('te','elementary',[]);
+}
+function collectFrom(prefix,category){
+  const isE=category==='elementary';
+  const autoFn=isE?calcGrade:calcAge;
+  return [...document.getElementById('memberList-'+prefix).querySelectorAll('.mrow')].map(r=>({
+    category, name:r.querySelector('.m-name').value.trim(),
+    kana:r.querySelector('.m-kana').value.trim(),
+    gender:r.querySelector('.m-gender').value,
+    birthday:r.querySelector('.m-birthday').value,
+    address:r.querySelector('.m-address').value.trim(),
+    tel:r.querySelector('.m-tel').value.trim(),
+    note:autoFn(r.querySelector('.m-birthday').value)
+  }));
+}
+function validateFrom(prefix){
   let ok=true;
-  ok = vField('i-name', document.getElementById('i-name').value) && ok;
-  ok = vField('i-kana', document.getElementById('i-kana').value) && ok;
-  ok = vField('i-birthday', document.getElementById('i-birthday').value) && ok;
-  const gender = document.querySelector('[name="i-gender"]:checked');
-  document.getElementById('f-i-gender').classList.toggle('err',!gender); if(!gender) ok=false;
-  if(!document.getElementById('i-free').checked){
-    ok = vField('i-team', document.getElementById('i-team').value) && ok;
-  }
-  ok = vField('i-address', document.getElementById('i-address').value) && ok;
-  ok = vField('i-tel', document.getElementById('i-tel').value) && ok;
-  ok = vField('i-email', document.getElementById('i-email').value) && ok;
-  const agreeEl=document.getElementById('agree-i');
-  const agreed=document.getElementById('i-agree').checked;
-  agreeEl.classList.toggle('err',!agreed); if(!agreed) ok=false;
-  if(!ok){ document.querySelector('#formIndividual .err')||agreeEl.scrollIntoView({behavior:'smooth',block:'center'}); return; }
+  const rows=[...document.getElementById('memberList-'+prefix).querySelectorAll('.mrow')];
+  if(rows.length<MIN) ok=false;
+  rows.forEach(r=>{
+    const rOk=r.querySelector('.m-name').value.trim()&&r.querySelector('.m-gender').value&&r.querySelector('.m-birthday').value&&r.querySelector('.m-address').value.trim()&&r.querySelector('.m-tel').value.trim();
+    r.classList.toggle('err',!rOk); if(!rOk) ok=false;
+  });
+  updateCount(prefix); return ok;
+}
+document.getElementById('btnAdd-tg').addEventListener('click',()=>makeMRow('tg','general',null));
+document.getElementById('btnAdd-te').addEventListener('click',()=>makeMRow('te','elementary',null));
 
+/* ---- 個人登録送信 ---- */
+document.getElementById('formIndividual').addEventListener('submit',async function(e){
+  e.preventDefault(); let ok=true;
+  ok=vField('i-name',document.getElementById('i-name').value)&&ok;
+  ok=vField('i-kana',document.getElementById('i-kana').value)&&ok;
+  ok=vField('i-birthday',document.getElementById('i-birthday').value)&&ok;
+  ok=vField('i-qual',document.getElementById('i-qual').value)&&ok;
+  const gender=document.querySelector('[name="i-gender"]:checked');
+  document.getElementById('f-i-gender').classList.toggle('err',!gender); if(!gender) ok=false;
+  if(!document.getElementById('i-free').checked) ok=vField('i-team',document.getElementById('i-team').value)&&ok;
+  ok=vField('i-address',document.getElementById('i-address').value)&&ok;
+  ok=vField('i-tel',document.getElementById('i-tel').value)&&ok;
+  ok=vField('i-email',document.getElementById('i-email').value)&&ok;
+  const agreeEl=document.getElementById('agree-i');
+  const agreed=document.getElementById('agree-cb-i').checked;
+  agreeEl.classList.toggle('err',!agreed); if(!agreed) ok=false;
+  if(!ok) return;
   const payload={
     name:document.getElementById('i-name').value.trim(),
     kana:document.getElementById('i-kana').value.trim(),
     birthday:document.getElementById('i-birthday').value,
     gender:gender.value,
+    qual:document.getElementById('i-qual').value,
+    school:document.getElementById('i-school').value.trim(),
     teamName:document.getElementById('i-free').checked?'':document.getElementById('i-team').value.trim(),
     freeAgent:document.getElementById('i-free').checked,
     address:document.getElementById('i-address').value.trim(),
     tel:document.getElementById('i-tel').value.trim(),
     email:document.getElementById('i-email').value.trim()
   };
-
-  const btn=document.getElementById('btnSubmitIndividual');
-  btn.disabled=true; btn.textContent='送信中...';
+  const btn=document.getElementById('btnSubmitIndividual'); btn.disabled=true; btn.textContent='送信中...';
   try{
-    let res;
-    if(editMode&&editType==='individual'&&editId){
-      res=await api('update',{type:'individual',id:editId,payload});
-    } else {
-      res=await api('create',{type:'individual',payload});
-    }
-    editId=res.id||editId; editType='individual'; editMode=true; editRecord=payload;
-    document.getElementById('successTitle').textContent=editMode&&res.id===editId&&res.id?'登録ありがとうございます':'登録内容を更新しました';
-    document.getElementById('successTitle').textContent= (res.updated?'登録内容を更新しました':'ご登録ありがとうございます');
+    const res=editMode&&editType==='individual'&&editId?await api('update',{type:'individual',id:editId,payload}):await api('create',{type:'individual',payload});
+    editId=res.id||editId; editType='individual'; editMode=true;
+    document.getElementById('successTitle').textContent=res.updated?'登録内容を更新しました':'ご登録ありがとうございます';
     document.getElementById('successText').textContent='個人登録を受け付けました。';
     show('pageSuccess');
-  }catch(err){
-    alert(err.message);
-  }finally{
-    btn.disabled=false; btn.textContent=editMode?'登録内容を更新する':'個人登録を送信する';
-  }
+  }catch(err){alert(err.message);}
+  finally{btn.disabled=false;btn.textContent=editMode?'登録内容を更新する':'個人登録を送信する';}
 });
 
-/* ---- 団体登録送信（共通関数） ---- */
-async function submitTeamForm(prefix, category, submitBtnId, tabKey){
+/* ---- 団体登録送信（共通） ---- */
+async function submitTeam(prefix,category,submitId,tabKey){
   let ok=true;
-  ok=vField(prefix+'-name',document.getElementById(prefix+'-name').value)&&ok;
-  ok=vField(prefix+'-base',document.getElementById(prefix+'-base').value)&&ok;
-  ok=vField(prefix+'-time',document.getElementById(prefix+'-time').value)&&ok;
-  ok=vField(prefix+'-rep',document.getElementById(prefix+'-rep').value)&&ok;
-  ok=vField(prefix+'-tel',document.getElementById(prefix+'-tel').value)&&ok;
-  ok=vField(prefix+'-email',document.getElementById(prefix+'-email').value)&&ok;
-  const mOk=validateMembersFor(prefix); if(!mOk) ok=false;
-  const members=collectMembersFrom(prefix, category);
+  ['name','base','time','rep','tel','email'].forEach(f=>{
+    ok=vField(prefix+'-'+f,document.getElementById(prefix+'-'+f).value)&&ok;
+  });
+  if(!validateFrom(prefix)) ok=false;
+  const members=collectFrom(prefix,category);
   const agreeEl=document.getElementById('agree-'+prefix);
   const agreed=document.getElementById('agree-cb-'+prefix).checked;
   agreeEl.classList.toggle('err',!agreed); if(!agreed) ok=false;
@@ -727,95 +571,178 @@ async function submitTeamForm(prefix, category, submitBtnId, tabKey){
     teamName:document.getElementById(prefix+'-name').value.trim(),
     base:document.getElementById(prefix+'-base').value.trim(),
     activityTime:document.getElementById(prefix+'-time').value.trim(),
+    condition:document.getElementById(prefix+'-cond').value.trim(),
     repName:document.getElementById(prefix+'-rep').value.trim(),
     repTel:document.getElementById(prefix+'-tel').value.trim(),
     repEmail:document.getElementById(prefix+'-email').value.trim(),
     category, members
   };
-  const btn=document.getElementById(submitBtnId);
-  btn.disabled=true; btn.textContent='送信中...';
+  const btn=document.getElementById(submitId); btn.disabled=true; btn.textContent='送信中...';
   try{
-    let res;
-    if(editMode&&editType===tabKey&&editId){
-      res=await api('update',{type:'team',id:editId,payload});
-    } else {
-      res=await api('create',{type:'team',payload});
-    }
-    editId=res.id||editId; editType=tabKey; editMode=true; editRecord=payload;
-    document.getElementById('successTitle').textContent=(res.updated?'登録内容を更新しました':(category==='elementary'?'小学生団体登録ありがとうございます':'一般団体登録ありがとうございます'));
-    document.getElementById('successText').textContent=`団体登録を受け付けました（${members.length}名）。`;
+    const res=editMode&&editType===tabKey&&editId?await api('update',{type:'team',id:editId,payload}):await api('create',{type:'team',payload});
+    editId=res.id||editId; editType=tabKey; editMode=true;
+    document.getElementById('successTitle').textContent=res.updated?'登録内容を更新しました':(category==='elementary'?'小学生団体登録ありがとうございます':'一般団体登録ありがとうございます');
+    document.getElementById('successText').textContent='団体登録を受け付けました（'+members.length+'名）。';
     show('pageSuccess');
-  }catch(err){ alert(err.message); }
-  finally{ btn.disabled=false; btn.textContent=(editMode?'登録内容を更新する':(category==='elementary'?'小学生団体登録を送信する':'一般団体登録を送信する')); }
+  }catch(err){alert(err.message);}
+  finally{btn.disabled=false;btn.textContent=editMode?'登録内容を更新する':(category==='elementary'?'小学生団体登録を送信する':'一般団体登録を送信する');}
 }
-document.getElementById('form-team-general').addEventListener('submit',function(e){ e.preventDefault(); submitTeamForm('tg','general','btnSubmitGeneral','team-general'); });
-document.getElementById('form-team-elementary').addEventListener('submit',function(e){ e.preventDefault(); submitTeamForm('te','elementary','btnSubmitElementary','team-elementary'); });
+document.getElementById('form-team-general').addEventListener('submit',function(e){e.preventDefault();submitTeam('tg','general','btnSubmitGeneral','team-general');});
+document.getElementById('form-team-elementary').addEventListener('submit',function(e){e.preventDefault();submitTeam('te','elementary','btnSubmitElementary','team-elementary');});
+
+/* ---- Excelアップロード ---- */
+function parseXlsx(file){
+  return new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+    reader.onload=e=>{
+      try{
+        const wb=XLSX.read(e.target.result,{type:'array'});
+        const ws=wb.Sheets[wb.SheetNames[0]];
+        const rows=XLSX.utils.sheet_to_json(ws,{header:1,defval:''});
+        // 団体情報読み取り（行インデックスで取得）
+        const cell=(r,c)=>{ const v=rows[r]?rows[r][c]:''; return String(v||'').trim(); };
+        const teamInfo={
+          teamName: cell(2,3),
+          base: cell(3,3),
+          activityTime: cell(4,3),
+          condition: cell(5,3),
+          repName: cell(6,3),
+          repTel: cell(7,3),
+          repEmail: cell(8,3),
+        };
+        // メンバー読み取り（11行目以降、№が数値の行）
+        const members=[];
+        for(let i=11;i<rows.length;i++){
+          const r=rows[i];
+          if(!r||!r[0]||isNaN(Number(r[0]))) continue;
+          const raw=r[3];
+          let bday='';
+          if(raw instanceof Date){bday=raw.toISOString().slice(0,10);}
+          else if(typeof raw==='number'){const d=new Date(Math.round((raw-25569)*86400*1000));bday=d.toISOString().slice(0,10);}
+          else if(typeof raw==='string'&&raw.trim()){bday=raw.trim();}
+          if(!String(r[1]||'').trim()) continue;
+          members.push({
+            name:String(r[1]||'').replace(/[\u3000\s]+/g,' ').trim(),
+            kana:'', gender:String(r[2]||'').trim(),
+            birthday:bday, address:String(r[4]||'').trim(),
+            tel:String(r[5]||'').trim(), qual:String(r[6]||'').trim(),
+            school:String(r[7]||'').trim(),
+            note:''
+          });
+        }
+        resolve({teamInfo,members});
+      }catch(err){reject(err);}
+    };
+    reader.onerror=reject;
+    reader.readAsArrayBuffer(file);
+  });
+}
+
+function showPreview(data){
+  const{teamInfo,members}=data;
+  document.getElementById('previewTitle').textContent=teamInfo.teamName||'（団体名未記入）';
+  document.getElementById('previewTeam').innerHTML=`
+    <div class="preview-row"><span class="preview-label">練習場所：</span>${escH(teamInfo.base)}</div>
+    <div class="preview-row"><span class="preview-label">練習日時：</span>${escH(teamInfo.activityTime)}</div>
+    <div class="preview-row"><span class="preview-label">入会条件：</span>${escH(teamInfo.condition)}</div>
+    <div class="preview-row"><span class="preview-label">代表者：</span>${escH(teamInfo.repName)} / ${escH(teamInfo.repTel)} / ${escH(teamInfo.repEmail)}</div>`;
+  const rows=members.map((m,i)=>`<tr><td>${i+1}</td><td>${escH(m.name)}</td><td>${escH(m.gender)}</td><td>${escH(m.birthday)}</td><td>${escH(m.address)}</td><td>${escH(m.tel)}</td><td>${escH(m.qual)}</td><td>${escH(m.school)}</td></tr>`).join('');
+  document.getElementById('previewMembers').innerHTML=`<table class="preview-member-table"><thead><tr><th>#</th><th>氏名</th><th>性別</th><th>生年月日</th><th>住所</th><th>電話番号</th><th>資格</th><th>学校名</th></tr></thead><tbody>${rows}</tbody></table>`;
+  document.getElementById('uploadPreview').style.display='block';
+}
+
+document.getElementById('xlsxFile').addEventListener('change',async function(){
+  const file=this.files[0]; if(!file) return;
+  const msg=document.getElementById('uploadMsg');
+  msg.className='upload-msg'; msg.style.display='none';
+  document.getElementById('uploadPreview').style.display='none';
+  try{
+    const data=await parseXlsx(file);
+    if(!data.teamInfo.teamName){msg.className='upload-msg ng';msg.textContent='団体名が読み取れませんでした。ファイル形式をご確認ください。';msg.style.display='block';return;}
+    if(data.members.length===0){msg.className='upload-msg ng';msg.textContent='メンバーが読み取れませんでした。';msg.style.display='block';return;}
+    uploadedPayload=data;
+    showPreview(data);
+    msg.className='upload-msg ok';msg.textContent=`${data.teamInfo.teamName}：${data.members.length}名を読み込みました。内容を確認の上「この内容で登録する」をクリックしてください。`;msg.style.display='block';
+  }catch(err){msg.className='upload-msg ng';msg.textContent='読み込みに失敗しました：'+err.message;msg.style.display='block';}
+});
+
+// ドラッグ&ドロップ
+const ua=document.getElementById('uploadArea');
+ua.addEventListener('dragover',e=>{e.preventDefault();ua.style.background='#d0e8ff';});
+ua.addEventListener('dragleave',()=>{ua.style.background='';});
+ua.addEventListener('drop',e=>{e.preventDefault();ua.style.background='';const f=e.dataTransfer.files[0];if(f){document.getElementById('xlsxFile').files=e.dataTransfer.files;document.getElementById('xlsxFile').dispatchEvent(new Event('change'));}});
+
+document.getElementById('btnUploadSubmit').addEventListener('click',async function(){
+  if(!uploadedPayload) return;
+  const{teamInfo,members}=uploadedPayload;
+  const payload={
+    teamName:teamInfo.teamName, base:teamInfo.base, activityTime:teamInfo.activityTime,
+    condition:teamInfo.condition, repName:teamInfo.repName, repTel:teamInfo.repTel, repEmail:teamInfo.repEmail,
+    category:'general',
+    members:members.map(m=>({...m,category:'general',note:calcAge(m.birthday)}))
+  };
+  this.disabled=true; this.textContent='送信中...';
+  try{
+    await api('create',{type:'team',payload});
+    document.getElementById('successTitle').textContent='一括登録が完了しました';
+    document.getElementById('successText').textContent=`${teamInfo.teamName}（${members.length}名）を登録しました。`;
+    show('pageSuccess');
+  }catch(err){alert(err.message);}
+  finally{this.disabled=false;this.textContent='この内容で登録する';}
+});
 
 /* ---- 検索 ---- */
-document.getElementById('btnSearch').addEventListener('click', async function(){
+document.getElementById('btnSearch').addEventListener('click',async function(){
   let ok=true;
   const type=document.querySelector('[name="s-type"]:checked');
   document.getElementById('f-s-type').classList.toggle('err',!type); if(!type) ok=false;
   ok=vField('s-name',document.getElementById('s-name').value)&&ok;
   ok=vField('s-tel',document.getElementById('s-tel').value)&&ok;
   if(!ok) return;
-  const msg=document.getElementById('searchMsg');
-  msg.style.display='none';
+  const msg=document.getElementById('searchMsg'); msg.style.display='none';
   this.disabled=true; this.textContent='検索中...';
   try{
-    const res=await api('search',{type:type.value,name:document.getElementById('s-name').value,tel:document.getElementById('s-tel').value});
+    const apiType=type.value==='individual'?'individual':'team';
+    const res=await api('search',{type:apiType,category:type.value,name:document.getElementById('s-name').value,tel:document.getElementById('s-tel').value});
     if(res.record){
-      editMode=true; editType=type.value; editId=res.id; editRecord=res.record;
+      const rec=res.record; editMode=true; editType=type.value; editId=res.id;
       document.getElementById('editBadge').style.display='block';
-      document.getElementById('tabBar').style.display= type.value==='individual'?'none':'none';
       if(type.value==='individual'){
-        // フォームに値をセット
-        document.getElementById('i-name').value=res.record.name||'';
-        document.getElementById('i-kana').value=res.record.kana||'';
-        document.getElementById('i-birthday').value=res.record.birthday||'';
-        document.getElementById('i-age').textContent=calcAge(res.record.birthday);
-        document.querySelectorAll('[name="i-gender"]').forEach(r=>r.checked=r.value===res.record.gender);
-        document.getElementById('i-free').checked=!!res.record.freeAgent;
-        document.getElementById('i-team').value=res.record.teamName||'';
-        document.getElementById('i-team').disabled=!!res.record.freeAgent;
-        document.getElementById('f-i-team').style.opacity=res.record.freeAgent?'.5':'1';
-        document.getElementById('i-address').value=res.record.address||'';
-        document.getElementById('i-tel').value=res.record.tel||'';
-        document.getElementById('i-email').value=res.record.email||'';
+        document.getElementById('i-name').value=rec.name||'';
+        document.getElementById('i-kana').value=rec.kana||'';
+        document.getElementById('i-birthday').value=rec.birthday||'';
+        document.getElementById('i-age').textContent=calcAge(rec.birthday);
+        document.querySelectorAll('[name="i-gender"]').forEach(r=>r.checked=r.value===rec.gender);
+        document.getElementById('i-qual').value=rec.qual||'';
+        document.getElementById('i-school').value=rec.school||'';
+        document.getElementById('i-free').checked=!!rec.freeAgent;
+        document.getElementById('i-team').value=rec.teamName||'';
+        document.getElementById('i-team').disabled=!!rec.freeAgent;
+        document.getElementById('i-address').value=rec.address||'';
+        document.getElementById('i-tel').value=rec.tel||'';
+        document.getElementById('i-email').value=rec.email||'';
         document.getElementById('btnSubmitIndividual').textContent='登録内容を更新する';
-        currentTab='individual';
-        document.getElementById('formIndividual').classList.remove('hidden');
-        document.getElementById('formTeam').classList.add('hidden');
+        switchTab('individual');
       } else {
-        document.getElementById('t-name').value=res.record.teamName||'';
-        document.getElementById('t-base').value=res.record.base||'';
-        document.getElementById('t-time').value=res.record.activityTime||'';
-        document.getElementById('t-rep').value=res.record.repName||'';
-        document.getElementById('t-tel').value=res.record.repTel||'';
-        document.getElementById('t-email').value=res.record.repEmail||'';
-        const isElem = res.record.category==='elementary';
-        const prefix = isElem ? 'te' : 'tg';
-        const tabKey = isElem ? 'team-elementary' : 'team-general';
-        document.getElementById(prefix+'-name').value=res.record.teamName||'';
-        document.getElementById(prefix+'-base').value=res.record.base||'';
-        document.getElementById(prefix+'-time').value=res.record.activityTime||'';
-        document.getElementById(prefix+'-rep').value=res.record.repName||'';
-        document.getElementById(prefix+'-tel').value=res.record.repTel||'';
-        document.getElementById(prefix+'-email').value=res.record.repEmail||'';
-        initMembersFor(prefix, res.record.category||'general', res.record.members||[]);
-        switchTab(tabKey);
+        const prefix=type.value==='team-elementary'?'te':'tg';
+        const category=type.value==='team-elementary'?'elementary':'general';
+        document.getElementById(prefix+'-name').value=rec.teamName||'';
+        document.getElementById(prefix+'-base').value=rec.base||'';
+        document.getElementById(prefix+'-time').value=rec.activityTime||'';
+        document.getElementById(prefix+'-cond').value=rec.condition||'';
+        document.getElementById(prefix+'-rep').value=rec.repName||'';
+        document.getElementById(prefix+'-tel').value=rec.repTel||'';
+        document.getElementById(prefix+'-email').value=rec.repEmail||'';
+        initMembersFor(prefix,category,rec.members||[]);
+        document.getElementById(type.value==='team-elementary'?'btnSubmitElementary':'btnSubmitGeneral').textContent='登録内容を更新する';
+        switchTab(type.value);
       }
       show('pageRegister');
-    } else {
-      msg.textContent='該当する登録が見つかりませんでした。入力内容をご確認ください。';
-      msg.style.display='block';
+    }else{
+      msg.textContent='該当する登録が見つかりませんでした。入力内容をご確認ください。'; msg.style.display='block';
     }
-  }catch(err){
-    msg.textContent=err.message;
-    msg.style.display='block';
-  }finally{
-    this.disabled=false; this.textContent='検索する';
-  }
+  }catch(err){msg.textContent=err.message;msg.style.display='block';}
+  finally{this.disabled=false;this.textContent='検索する';}
 });
 
 /* ---- 完了画面 ---- */
@@ -824,8 +751,7 @@ document.getElementById('btnEditAfter').addEventListener('click',()=>{
   show('pageRegister');
 });
 document.getElementById('btnBackToTop').addEventListener('click',()=>{
-  editMode=false; editType=null; editId=null; editRecord=null;
-  show('pageLanding');
+  editMode=false;editType=null;editId=null;show('pageLanding');
 });
 
 /* ---- 初期化 ---- */
