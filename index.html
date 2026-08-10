@@ -245,7 +245,34 @@ body{font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans',Meiryo,sans-serif;b
             <div class="field" id="f-tg-email"><label>メールアドレス<span class="req">*</span></label><input type="email" id="tg-email" placeholder="taro@example.com"><div class="err-msg">メールアドレスをご入力ください</div></div>
           </div>
         </div>
-        <div class="card-title">メンバー登録（5名以上）</div>
+        <div class="card-title" style="border-color:var(--orange)">練習場所の紹介</div>
+        <div class="sec">
+          <div class="field">
+            <label>練習場所の紹介<span class="req">*</span></label>
+            <div class="pills">
+              <label class="pill"><input type="radio" name="tg-intro" value="可" id="tg-intro-ok"><span>可</span></label>
+              <label class="pill"><input type="radio" name="tg-intro" value="不可" id="tg-intro-ng"><span>不可</span></label>
+            </div>
+          </div>
+          <div id="tg-intro-contact" class="hidden">
+            <div style="font-size:12px;color:var(--text-soft);margin-bottom:10px;">連絡先が代表者と異なる場合のみ入力してください。</div>
+            <div class="row3">
+              <div class="field">
+                <label>担当者名</label>
+                <input type="text" id="tg-intro-name" placeholder="（代表者と同じ場合は空欄）">
+              </div>
+              <div class="field">
+                <label>電話番号</label>
+                <input type="tel" id="tg-intro-tel" placeholder="（代表者と同じ場合は空欄）">
+              </div>
+              <div class="field">
+                <label>メールアドレス</label>
+                <input type="email" id="tg-intro-email" placeholder="（代表者と同じ場合は空欄）">
+              </div>
+            </div>
+          </div>
+        </div>
+                <div class="card-title">メンバー登録（5名以上）</div>
         <div class="sec">
           <div style="font-size:11.5px;color:var(--text-soft);margin-bottom:8px;">氏名・性別・生年月日・住所・電話番号・資格は必須です。生年月日を入力すると年齢が自動表示されます。</div>
           <div style="display:grid;grid-template-columns:22px 1.2fr 1fr 60px 1fr 1fr 1fr 1fr 28px;gap:6px;padding:0 10px;margin-bottom:4px;">
@@ -287,7 +314,34 @@ body{font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans',Meiryo,sans-serif;b
             <div class="field" id="f-te-email"><label>メールアドレス<span class="req">*</span></label><input type="email" id="te-email" placeholder="taro@example.com"><div class="err-msg">メールアドレスをご入力ください</div></div>
           </div>
         </div>
-        <div class="card-title" style="border-color:var(--blue)">メンバー登録（5名以上）</div>
+        <div class="card-title" style="border-color:var(--blue)">練習場所の紹介</div>
+        <div class="sec">
+          <div class="field">
+            <label>練習場所の紹介<span class="req">*</span></label>
+            <div class="pills">
+              <label class="pill"><input type="radio" name="te-intro" value="可" id="te-intro-ok"><span>可</span></label>
+              <label class="pill"><input type="radio" name="te-intro" value="不可" id="te-intro-ng"><span>不可</span></label>
+            </div>
+          </div>
+          <div id="te-intro-contact" class="hidden">
+            <div style="font-size:12px;color:var(--text-soft);margin-bottom:10px;">連絡先が代表者と異なる場合のみ入力してください。</div>
+            <div class="row3">
+              <div class="field">
+                <label>担当者名</label>
+                <input type="text" id="te-intro-name" placeholder="（代表者と同じ場合は空欄）">
+              </div>
+              <div class="field">
+                <label>電話番号</label>
+                <input type="tel" id="te-intro-tel" placeholder="（代表者と同じ場合は空欄）">
+              </div>
+              <div class="field">
+                <label>メールアドレス</label>
+                <input type="email" id="te-intro-email" placeholder="（代表者と同じ場合は空欄）">
+              </div>
+            </div>
+          </div>
+        </div>
+                <div class="card-title" style="border-color:var(--blue)">メンバー登録（5名以上）</div>
         <div class="sec">
           <div style="font-size:11.5px;color:var(--text-soft);margin-bottom:8px;">生年月日を入力すると学年が自動表示されます。</div>
           <div style="display:grid;grid-template-columns:22px 1.2fr 1fr 60px 1fr 1fr 1.2fr 1fr 28px;gap:6px;padding:0 10px;margin-bottom:4px;">
@@ -611,6 +665,10 @@ async function submitTeam(prefix,category,submitId,tabKey){
     repName:document.getElementById(prefix+'-rep').value.trim(),
     repTel:document.getElementById(prefix+'-tel').value.trim(),
     repEmail:document.getElementById(prefix+'-email').value.trim(),
+    introAvail:(document.querySelector('[name="'+prefix+'-intro"]:checked')?.value||''),
+    introName:document.getElementById(prefix+'-intro-name')?.value.trim()||'',
+    introTel:document.getElementById(prefix+'-intro-tel')?.value.trim()||'',
+    introEmail:document.getElementById(prefix+'-intro-email')?.value.trim()||'',
     category, members
   };
   const btn=document.getElementById(submitId); btn.disabled=true; btn.textContent='送信中...';
@@ -665,8 +723,23 @@ function parseXlsx(file){
           repName:  cell(6,3)||cell(6,1)||'',
           repTel:   cell(7,3)||cell(7,1)||'',
           repEmail: cell(8,3)||cell(8,1)||'',
+          // Row10: 練習場所の紹介
+          // D列(idx3)に「可 ・ 不可」→ 可か不可を判定
+          introAvail: (()=>{
+            const v=cell(9,3)||cell(9,1)||'';
+            if(v.includes('不可')) return '不可';
+            if(v.includes('可')) return '可';
+            return '';
+          })(),
+          // Row11: 紹介連絡先
+          // xlsx版: F列(idx5)=担当者名, G列(idx6)=電話, H列(idx7)=メール
+          // xls版:  D列(idx3)=担当者名, F列(idx5)=電話, H列(idx7)=メール
+          // → 両方に対応（値があるものを優先）
+          introName:  cell(10,5)||cell(10,3)||'',
+          introTel:   cell(10,6)||cell(10,4)||'',
+          introEmail: cell(10,7)||'',
         };
-        // メンバー（11行目以降、1列目が番号の行）
+        // メンバー（11行目以降または13行目以降、1列目が番号の行）
         const members=[];
         for(let i=11;i<rows.length;i++){
           const r=rows[i];
@@ -700,11 +773,19 @@ function showPreview(data){
   const tn=teamInfo.teamName||'';
   document.getElementById('previewTitle').innerHTML=
     '<input type="text" id="previewTeamNameInput" style="font-size:15px;font-weight:700;width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:7px;background:var(--bg);" placeholder="チーム名を入力してください" value="'+escH(tn)+'">';
+  const introText=teamInfo.introAvail
+    ?(teamInfo.introAvail==='可'
+      ?'可'+(teamInfo.introName||teamInfo.introTel||teamInfo.introEmail
+        ?' ／ 担当：'+[teamInfo.introName,teamInfo.introTel,teamInfo.introEmail].filter(Boolean).join(' / ')
+        :'（連絡先は代表者と同じ）')
+      :'不可')
+    :'（未入力）';
   document.getElementById('previewTeam').innerHTML=`
     <div class="preview-row"><span class="preview-label">練習場所：</span>${escH(teamInfo.base)}</div>
     <div class="preview-row"><span class="preview-label">練習日時：</span>${escH(teamInfo.activityTime)}</div>
     <div class="preview-row"><span class="preview-label">入会条件：</span>${escH(teamInfo.condition)}</div>
-    <div class="preview-row"><span class="preview-label">代表者：</span>${escH(teamInfo.repName)} / ${escH(teamInfo.repTel)} / ${escH(teamInfo.repEmail)}</div>`;
+    <div class="preview-row"><span class="preview-label">代表者：</span>${escH(teamInfo.repName)} / ${escH(teamInfo.repTel)} / ${escH(teamInfo.repEmail)}</div>
+    <div class="preview-row"><span class="preview-label">練習場所の紹介：</span>${escH(introText)}</div>`;
   const rows=members.map((m,i)=>`<tr><td>${i+1}</td><td>${escH(m.name)}</td><td>${escH(m.gender)}</td><td>${escH(m.birthday)}</td><td>${escH(m.address)}</td><td>${escH(m.tel)}</td><td>${escH(m.qual)}</td><td>${escH(m.school)}</td></tr>`).join('');
   document.getElementById('previewMembers').innerHTML=`<table class="preview-member-table"><thead><tr><th>#</th><th>氏名</th><th>性別</th><th>生年月日</th><th>住所</th><th>電話番号</th><th>資格</th><th>学校名</th></tr></thead><tbody>${rows}</tbody></table>`;
   document.getElementById('uploadPreview').classList.remove('hidden');
@@ -799,6 +880,13 @@ document.getElementById('btnSearch').addEventListener('click',async function(){
         document.getElementById(prefix+'-rep').value=rec.repName||'';
         document.getElementById(prefix+'-tel').value=rec.repTel||'';
         document.getElementById(prefix+'-email').value=rec.repEmail||'';
+        if(rec.introAvail){
+          const r=document.querySelector('[name="'+prefix+'-intro"][value="'+rec.introAvail+'"]');
+          if(r){r.checked=true;document.getElementById(prefix+'-intro-contact').classList.toggle('hidden',rec.introAvail!=='可');}
+        }
+        if(document.getElementById(prefix+'-intro-name')) document.getElementById(prefix+'-intro-name').value=rec.introName||'';
+        if(document.getElementById(prefix+'-intro-tel')) document.getElementById(prefix+'-intro-tel').value=rec.introTel||'';
+        if(document.getElementById(prefix+'-intro-email')) document.getElementById(prefix+'-intro-email').value=rec.introEmail||'';
         initMembersFor(prefix,category,rec.members||[]);
         document.getElementById(type.value==='team-elementary'?'btnSubmitElementary':'btnSubmitGeneral').textContent='登録内容を更新する';
         switchTab(type.value);
@@ -820,6 +908,16 @@ document.getElementById('btnBackToTop').addEventListener('click',()=>{
   editMode=false;editType=null;editId=null;
   document.getElementById('successFeeBox').style.display='none';
   show('pageLanding');
+});
+
+/* ---- 練習場所紹介ラジオ切替 ---- */
+['tg','te'].forEach(prefix=>{
+  document.querySelectorAll('[name="'+prefix+'-intro"]').forEach(r=>{
+    r.addEventListener('change',()=>{
+      const show = document.querySelector('[name="'+prefix+'-intro"]:checked')?.value === '可';
+      document.getElementById(prefix+'-intro-contact').classList.toggle('hidden',!show);
+    });
+  });
 });
 
 /* ---- 初期化 ---- */
