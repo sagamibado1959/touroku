@@ -368,6 +368,16 @@ body{font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans',Meiryo,sans-serif;b
     <div class="card">
       <div class="card-title">名簿Excelで一括登録</div>
       <p style="font-size:13px;color:var(--text-soft);margin-bottom:16px;">協会登録名簿（協会登録名簿_〇〇.xls または R7kyoukaitourokumeibo_〇〇.xlsx）をアップロードしてください。団体情報とメンバー全員を自動で読み込みます。<br><small style="color:#B23A2E;">※ チーム名が空欄の場合は読み込み後に入力できます。</small></p>
+
+      <div class="field" id="f-upload-category" style="margin-bottom:16px;">
+        <label>団体区分<span class="req">*</span></label>
+        <div class="pills">
+          <label class="pill"><input type="radio" name="upload-category" value="general" id="upload-cat-general"><span>一般団体（300円×人数）</span></label>
+          <label class="pill"><input type="radio" name="upload-category" value="elementary" id="upload-cat-elementary"><span>小学生団体（1,000円/チーム）</span></label>
+        </div>
+        <div class="err-msg">団体区分を選択してください</div>
+      </div>
+
       <label class="upload-area" id="uploadArea">
         <input type="file" id="xlsxFile" accept=".xlsx,.xls">
         <div class="upload-icon">📂</div>
@@ -391,6 +401,15 @@ body{font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans',Meiryo,sans-serif;b
     <div class="card">
       <div class="card-title">登録内容の検索</div>
       <p style="font-size:12.5px;color:var(--text-soft);margin-bottom:16px;">登録時のお名前（団体名）と電話番号で検索します。</p>
+      <div style="background:#F0F7FF;border:1px solid #C5D9F0;border-radius:10px;padding:14px;margin-bottom:18px;">
+        <div style="font-size:13px;font-weight:700;color:#1D4ED8;margin-bottom:8px;">📋 IDで検索（推奨）</div>
+        <div class="field" id="f-s-id">
+          <label>登録ID</label>
+          <input type="text" id="s-id" placeholder="例：AB12CD34EF" maxlength="10" style="font-family:monospace;letter-spacing:.1em;font-size:16px;text-transform:uppercase;">
+          <div style="font-size:11.5px;color:var(--text-soft);margin-top:4px;">登録完了時に表示された10桁のIDを入力してください</div>
+        </div>
+      </div>
+      <div style="text-align:center;font-size:12px;color:var(--text-soft);margin-bottom:14px;">IDが不明な場合は以下の情報で検索できます</div>
       <div class="field" id="f-s-type">
         <label>登録区分<span class="req">*</span></label>
         <div class="pills">
@@ -400,8 +419,8 @@ body{font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans',Meiryo,sans-serif;b
         </div>
         <div class="err-msg">登録区分を選択してください</div>
       </div>
-      <div class="field" id="f-s-name"><label>お名前 / 団体名<span class="req">*</span></label><input type="text" id="s-name" placeholder="相模原 太郎 / 〇〇バドミントンクラブ"><div class="err-msg">お名前または団体名をご入力ください</div></div>
-      <div class="field" id="f-s-tel"><label>電話番号<span class="req">*</span></label><input type="tel" id="s-tel" placeholder="090-1234-5678"><div class="err-msg">電話番号をご入力ください</div></div>
+      <div class="field" id="f-s-name"><label>お名前 / 団体名</label><input type="text" id="s-name" placeholder="相模原 太郎 / 〇〇バドミントンクラブ"><div class="err-msg">お名前または団体名をご入力ください</div></div>
+      <div class="field" id="f-s-tel"><label>電話番号</label><input type="tel" id="s-tel" placeholder="090-1234-5678"><div class="err-msg">電話番号をご入力ください</div></div>
       <div id="searchMsg" style="font-size:12.5px;color:var(--error);margin-top:10px;display:none;"></div>
       <button type="button" class="btn-submit" id="btnSearch" style="margin-top:16px;">検索する</button>
     </div>
@@ -413,6 +432,11 @@ body{font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans',Meiryo,sans-serif;b
       <div class="success-ring">✓</div>
       <h2 id="successTitle">ご登録ありがとうございます</h2>
       <p id="successText">内容を受け付けました。</p>
+      <div id="successIdBox" style="display:none;background:#F0F7FF;border:2px solid #2563EB;border-radius:12px;padding:16px 20px;margin:16px auto;max-width:320px;text-align:center;">
+        <div style="font-size:12px;font-weight:700;color:#1D4ED8;letter-spacing:.08em;margin-bottom:6px;">登録ID（修正時に必要です）</div>
+        <div id="successIdNum" style="font-size:28px;font-weight:900;color:#1D4ED8;letter-spacing:.12em;font-family:monospace;"></div>
+        <div style="font-size:11px;color:#516158;margin-top:6px;">このIDを必ず控えてください</div>
+      </div>
       <div class="fee-box" id="successFeeBox" style="margin:16px auto;max-width:280px;display:none;">
         <div class="fee-label">登録料金</div>
         <div class="fee-amount">¥<span id="successFeeNum">0</span><span class="fee-unit">円</span></div>
@@ -495,16 +519,21 @@ document.getElementById('btnToRegister').addEventListener('click',()=>{
   show('pageRegister');
 });
 document.getElementById('btnToEdit').addEventListener('click',()=>{
+  document.getElementById('s-id').value='';
   document.getElementById('s-name').value='';
   document.getElementById('s-tel').value='';
   document.querySelectorAll('[name="s-type"]').forEach(r=>r.checked=false);
-  document.getElementById('searchMsg').style.display='none';
+  document.getElementById('f-s-name').classList.remove('err');
+  document.getElementById('f-s-tel').classList.remove('err');
+  document.getElementById('searchMsg').classList.add('hidden');
   show('pageSearch');
 });
 document.getElementById('btnToUpload').addEventListener('click',()=>{
   document.getElementById('uploadPreview').classList.add('hidden');
   document.getElementById('uploadMsg').classList.add('hidden');
   document.getElementById('xlsxFile').value='';
+  document.querySelectorAll('[name="upload-category"]').forEach(r=>r.checked=false);
+  document.getElementById('f-upload-category').classList.remove('err');
   show('pageUpload');
 });
 document.getElementById('backFromRegister').addEventListener('click',()=>show('pageLanding'));
@@ -637,6 +666,8 @@ document.getElementById('formIndividual').addEventListener('submit',async functi
     editId=res.id||editId; editType='individual'; editMode=true;
     document.getElementById('successTitle').textContent=res.updated?'登録内容を更新しました':'ご登録ありがとうございます';
     document.getElementById('successText').textContent='個人登録を受け付けました。';
+    if(res.id&&!res.updated){ document.getElementById('successIdBox').style.display='block'; document.getElementById('successIdNum').textContent=res.id; }
+    else{ document.getElementById('successIdBox').style.display='none'; }
     document.getElementById('successFeeBox').style.display='block';
     document.getElementById('successFeeNum').textContent='500';
     document.getElementById('successFeeNote').textContent='個人登録：1名 × 500円';
@@ -677,6 +708,8 @@ async function submitTeam(prefix,category,submitId,tabKey){
     editId=res.id||editId; editType=tabKey; editMode=true;
     document.getElementById('successTitle').textContent=res.updated?'登録内容を更新しました':(category==='elementary'?'小学生団体登録ありがとうございます':'一般団体登録ありがとうございます');
     document.getElementById('successText').textContent='団体登録を受け付けました（'+members.length+'名）。';
+    if(res.id&&!res.updated){ document.getElementById('successIdBox').style.display='block'; document.getElementById('successIdNum').textContent=res.id; }
+    else{ document.getElementById('successIdBox').style.display='none'; }
     const isElem=(category==='elementary');
     const totalFee=isElem?1000:members.length*300;
     document.getElementById('successFeeBox').style.display='block';
@@ -827,34 +860,52 @@ document.getElementById('btnUploadSubmit').addEventListener('click',async functi
   this.disabled=true; this.textContent='送信中...';
   try{
     await api('create',{type:'team',payload});
-    document.getElementById('successTitle').textContent='一括登録が完了しました';
+    document.getElementById('successTitle').textContent=uploadCategory==='elementary'?'小学生団体登録が完了しました':'一般団体登録が完了しました';
     document.getElementById('successText').textContent=finalTeamName+'（'+members.length+'名）を登録しました。';
-    const uploadFee=members.length*300;
+    if(res.id){ document.getElementById('successIdBox').style.display='block'; document.getElementById('successIdNum').textContent=res.id; }
+    const isUploadElem=(uploadCategory==='elementary');
+    const uploadFee=isUploadElem?1000:members.length*300;
     document.getElementById('successFeeBox').style.display='block';
     document.getElementById('successFeeNum').textContent=uploadFee.toLocaleString();
-    document.getElementById('successFeeNote').textContent=members.length+'名 × 300円 = '+uploadFee.toLocaleString()+'円';
+    document.getElementById('successFeeNote').textContent=isUploadElem?'1チーム 1,000円（人数に関わらず一律）':members.length+'名 × 300円 = '+uploadFee.toLocaleString()+'円';
     show('pageSuccess');
   }catch(err){alert(err.message);}
   finally{this.disabled=false;this.textContent='この内容で登録する';}
 });
 
 /* ---- 検索 ---- */
+document.getElementById('s-id').addEventListener('input',function(){
+  this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'');
+});
 document.getElementById('btnSearch').addEventListener('click',async function(){
-  let ok=true;
+  const searchId=document.getElementById('s-id').value.trim();
   const type=document.querySelector('[name="s-type"]:checked');
-  document.getElementById('f-s-type').classList.toggle('err',!type); if(!type) ok=false;
-  ok=vField('s-name',document.getElementById('s-name').value)&&ok;
-  ok=vField('s-tel',document.getElementById('s-tel').value)&&ok;
+  const nameVal=document.getElementById('s-name').value.trim();
+  const telVal=document.getElementById('s-tel').value.trim();
+  // IDがある場合はID検索、ない場合は区分+名前+電話が必要
+  let ok=true;
+  if(!searchId){
+    document.getElementById('f-s-type').classList.toggle('err',!type); if(!type) ok=false;
+    if(!nameVal){ document.getElementById('f-s-name').classList.add('err'); ok=false; }
+    if(!telVal){ document.getElementById('f-s-tel').classList.add('err'); ok=false; }
+  }
   if(!ok) return;
   const msg=document.getElementById('searchMsg'); msg.classList.add('hidden');
   this.disabled=true; this.textContent='検索中...';
   try{
-    const apiType=type.value==='individual'?'individual':'team';
-    const res=await api('search',{type:apiType,category:type.value,name:document.getElementById('s-name').value,tel:document.getElementById('s-tel').value});
+    let apiType, category;
+    if(type){ apiType=type.value==='individual'?'individual':'team'; category=type.value; }
+    else{ apiType=null; category=null; }
+    const res=await api('search',{type:apiType,category,id:searchId||'',name:nameVal,tel:telVal});
     if(res.record){
-      const rec=res.record; editMode=true; editType=type.value; editId=res.id;
+      const rec=res.record; editMode=true;
+      // ID検索の場合はAPIからtypeが返ってくる
+      const resolvedType = res.type==='individual'?'individual'
+        :(res.category==='elementary'?'team-elementary':'team-general');
+      editType = resolvedType;
+      editId=res.id;
       document.getElementById('editBadge').style.display='block';
-      if(type.value==='individual'){
+      if(resolvedType==='individual'){
         document.getElementById('i-name').value=rec.name||'';
         document.getElementById('i-kana').value=rec.kana||'';
         document.getElementById('i-birthday').value=rec.birthday||'';
@@ -871,8 +922,8 @@ document.getElementById('btnSearch').addEventListener('click',async function(){
         document.getElementById('btnSubmitIndividual').textContent='登録内容を更新する';
         switchTab('individual');
       } else {
-        const prefix=type.value==='team-elementary'?'te':'tg';
-        const category=type.value==='team-elementary'?'elementary':'general';
+        const prefix=resolvedType==='team-elementary'?'te':'tg';
+        const category=resolvedType==='team-elementary'?'elementary':'general';
         document.getElementById(prefix+'-name').value=rec.teamName||'';
         document.getElementById(prefix+'-base').value=rec.base||'';
         document.getElementById(prefix+'-time').value=rec.activityTime||'';
@@ -888,8 +939,8 @@ document.getElementById('btnSearch').addEventListener('click',async function(){
         if(document.getElementById(prefix+'-intro-tel')) document.getElementById(prefix+'-intro-tel').value=rec.introTel||'';
         if(document.getElementById(prefix+'-intro-email')) document.getElementById(prefix+'-intro-email').value=rec.introEmail||'';
         initMembersFor(prefix,category,rec.members||[]);
-        document.getElementById(type.value==='team-elementary'?'btnSubmitElementary':'btnSubmitGeneral').textContent='登録内容を更新する';
-        switchTab(type.value);
+        document.getElementById(resolvedType==='team-elementary'?'btnSubmitElementary':'btnSubmitGeneral').textContent='登録内容を更新する';
+        switchTab(resolvedType);
       }
       show('pageRegister');
     }else{
@@ -907,6 +958,7 @@ document.getElementById('btnEditAfter').addEventListener('click',()=>{
 document.getElementById('btnBackToTop').addEventListener('click',()=>{
   editMode=false;editType=null;editId=null;
   document.getElementById('successFeeBox').style.display='none';
+  document.getElementById('successIdBox').style.display='none';
   show('pageLanding');
 });
 
@@ -917,6 +969,13 @@ document.getElementById('btnBackToTop').addEventListener('click',()=>{
       const show = document.querySelector('[name="'+prefix+'-intro"]:checked')?.value === '可';
       document.getElementById(prefix+'-intro-contact').classList.toggle('hidden',!show);
     });
+  });
+});
+
+/* ---- アップロード団体区分 ---- */
+document.querySelectorAll('[name="upload-category"]').forEach(r=>{
+  r.addEventListener('change',()=>{
+    document.getElementById('f-upload-category').classList.remove('err');
   });
 });
 
