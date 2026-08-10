@@ -409,18 +409,10 @@ body{font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans',Meiryo,sans-serif;b
           <div style="font-size:11.5px;color:var(--text-soft);margin-top:4px;">登録完了時に表示された10桁のIDを入力してください</div>
         </div>
       </div>
-      <div style="text-align:center;font-size:12px;color:var(--text-soft);margin-bottom:14px;">IDが不明な場合は以下の情報で検索できます</div>
-      <div class="field" id="f-s-type">
-        <label>登録区分<span class="req">*</span></label>
-        <div class="pills">
-          <label class="pill"><input type="radio" name="s-type" value="individual"><span>個人</span></label>
-          <label class="pill"><input type="radio" name="s-type" value="team-general"><span>一般団体</span></label>
-          <label class="pill"><input type="radio" name="s-type" value="team-elementary"><span>小学生団体</span></label>
-        </div>
-        <div class="err-msg">登録区分を選択してください</div>
+      <div style="text-align:center;font-size:12px;color:var(--text-soft);margin-bottom:14px;">
+        IDが不明な場合は
+        <a href="mailto:sagami.bado1959@gmail.com?subject=登録ID照会&body=氏名（団体名）：%0D%0A電話番号：%0D%0A登録区分（個人・一般団体・小学生団体）：" style="color:var(--blue);font-weight:700;">メールでお問い合わせください</a>
       </div>
-      <div class="field" id="f-s-name"><label>お名前 / 団体名</label><input type="text" id="s-name" placeholder="相模原 太郎 / 〇〇バドミントンクラブ"><div class="err-msg">お名前または団体名をご入力ください</div></div>
-      <div class="field" id="f-s-tel"><label>電話番号</label><input type="tel" id="s-tel" placeholder="090-1234-5678"><div class="err-msg">電話番号をご入力ください</div></div>
       <div id="searchMsg" style="font-size:12.5px;color:var(--error);margin-top:10px;display:none;"></div>
       <button type="button" class="btn-submit" id="btnSearch" style="margin-top:16px;">検索する</button>
     </div>
@@ -520,11 +512,7 @@ document.getElementById('btnToRegister').addEventListener('click',()=>{
 });
 document.getElementById('btnToEdit').addEventListener('click',()=>{
   document.getElementById('s-id').value='';
-  document.getElementById('s-name').value='';
-  document.getElementById('s-tel').value='';
-  document.querySelectorAll('[name="s-type"]').forEach(r=>r.checked=false);
-  document.getElementById('f-s-name').classList.remove('err');
-  document.getElementById('f-s-tel').classList.remove('err');
+  document.getElementById('f-s-id').classList.remove('err');
   document.getElementById('searchMsg').classList.add('hidden');
   show('pageSearch');
 });
@@ -879,24 +867,14 @@ document.getElementById('s-id').addEventListener('input',function(){
 });
 document.getElementById('btnSearch').addEventListener('click',async function(){
   const searchId=document.getElementById('s-id').value.trim();
-  const type=document.querySelector('[name="s-type"]:checked');
-  const nameVal=document.getElementById('s-name').value.trim();
-  const telVal=document.getElementById('s-tel').value.trim();
-  // IDがある場合はID検索、ない場合は区分+名前+電話が必要
-  let ok=true;
   if(!searchId){
-    document.getElementById('f-s-type').classList.toggle('err',!type); if(!type) ok=false;
-    if(!nameVal){ document.getElementById('f-s-name').classList.add('err'); ok=false; }
-    if(!telVal){ document.getElementById('f-s-tel').classList.add('err'); ok=false; }
+    document.getElementById('f-s-id').classList.add('err');
+    return;
   }
-  if(!ok) return;
   const msg=document.getElementById('searchMsg'); msg.classList.add('hidden');
   this.disabled=true; this.textContent='検索中...';
   try{
-    let apiType, category;
-    if(type){ apiType=type.value==='individual'?'individual':'team'; category=type.value; }
-    else{ apiType=null; category=null; }
-    const res=await api('search',{type:apiType,category,id:searchId||'',name:nameVal,tel:telVal});
+    const res=await api('search',{type:null,category:null,id:searchId,name:'',tel:''});
     if(res.record){
       const rec=res.record; editMode=true;
       // ID検索の場合はAPIからtypeが返ってくる
